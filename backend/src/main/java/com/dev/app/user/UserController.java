@@ -15,7 +15,7 @@ public class UserController {
     }
 }
 */
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +36,7 @@ public class UserController {
     public UserController() {
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -46,6 +47,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         Optional<User> user = userRepository.findById(id);
