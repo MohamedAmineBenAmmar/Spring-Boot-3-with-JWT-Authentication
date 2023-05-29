@@ -47,6 +47,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         Optional<User> user = userRepository.findById(id);
