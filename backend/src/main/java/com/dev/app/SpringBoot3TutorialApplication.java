@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan({"com.dev.app.user", "com.dev.app.flight"})
+@EntityScan({"com.dev.app.user", "com.dev.app.flight", "com.dev.app.catering_companies"})
 public class SpringBoot3TutorialApplication {
 
 	public static void main(String[] args) {

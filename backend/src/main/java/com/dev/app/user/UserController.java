@@ -56,6 +56,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getAllUsersByRole/{role}")
+    public List<User> getAllUsersByRole(@PathVariable String role) {
+        Role userRole = Role.valueOf(role); // Convert the role String to Role enum
+        return userRepository.findAllByRole(userRole);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
         Optional<User> existingUser = userRepository.findById(id);
