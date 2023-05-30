@@ -3,7 +3,10 @@ package com.dev.app.flight;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 import com.dev.app.catering_company.Menu;
+import com.dev.app.user.User;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,10 +50,23 @@ public class Flight {
     @Column(name = "price")
     private double price;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "flight_menu", joinColumns = @JoinColumn(name = "flight_id"),
     inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menus;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pilot_id")
+    private User pilot;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "copilot_id")
+    private User coPilot;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "flight_crew", joinColumns = @JoinColumn(name = "flight_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> flight_crew;
 
 
     // toString
