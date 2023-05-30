@@ -1,4 +1,4 @@
-package com.dev.app.catering_companies;
+package com.dev.app.catering_company;
 
 import jakarta.persistence.Entity;
 
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "catering_company")
+@Table(name = "catering_companies")
 public class CateringCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
