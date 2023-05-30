@@ -1,4 +1,4 @@
-package com.dev.app.catering_companies;
+package com.dev.app.catering_company;
 
 public enum SpecialSpecifications {
     VEGETARIAN,

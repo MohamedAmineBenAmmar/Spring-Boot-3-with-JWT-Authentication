@@ -1,4 +1,4 @@
-package com.dev.app.catering_companies;
+package com.dev.app.catering_company;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "contact_information")
+@Table(name = "contact_informations")
 public class ContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

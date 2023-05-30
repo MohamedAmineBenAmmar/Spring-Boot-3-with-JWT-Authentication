@@ -1,12 +1,15 @@
 package com.dev.app.flight;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.dev.app.catering_company.Menu;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @Builder // Building the object using the design pattern builder
@@ -44,6 +47,12 @@ public class Flight {
     @Column(name = "price")
     private double price;
     
+    @ManyToMany
+    @JoinTable(name = "flight_menu", joinColumns = @JoinColumn(name = "flight_id"),
+    inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private List<Menu> menus;
+
+
     // toString
     @Override
     public String toString() {

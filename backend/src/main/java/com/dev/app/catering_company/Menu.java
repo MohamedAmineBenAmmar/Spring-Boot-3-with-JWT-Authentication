@@ -1,4 +1,4 @@
-package com.dev.app.catering_companies;
+package com.dev.app.catering_company;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "menu")
+@Table(name = "menus")
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
