@@ -1,4 +1,6 @@
 spring:
+  mvc:
+    dispatch-options-request: true
   datasource:
     url: jdbc:mysql://localhost/springbootdb
     username: mysql
