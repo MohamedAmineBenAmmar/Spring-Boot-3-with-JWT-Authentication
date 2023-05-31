@@ -45,15 +45,12 @@ function CateringCompanyCard({
             boxShadow: '1px 4px 6px rgba(0, 0, 0, 0.1)',
             overflow: 'visible',
             height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <CardActionArea>
-            <CardContent
-              sx={{
-                p: 3,
-                height: '180px',
-              }}
-            >
+          <CardActionArea sx={{ flexGrow: 1 }}>
+            <CardContent sx={{ p: 3 }}>
               <MDTypography variant="h5" gutterBottom>
                 {menu.name}
               </MDTypography>
@@ -66,11 +63,21 @@ function CateringCompanyCard({
               <MDTypography variant="body2" color="textSecondary" mb={2}>
                 {menuItems}
               </MDTypography>
-              <MDTypography variant="subtitle2" color="primary" textAlign="center" mt={2}>
-                ${menu.pricePerServing}
-              </MDTypography>
             </CardContent>
           </CardActionArea>
+          <MDBox
+            sx={{
+              p: 2,
+              color: 'white',
+              textAlign: 'center',
+              borderTopLeftRadius: '4px',
+              borderTopRightRadius: '4px',
+            }}
+          >
+            <MDTypography variant="subtitle2" component="div" color='primary'>
+              ${menu.pricePerServing}
+            </MDTypography>
+          </MDBox>
         </Card>
       </ImageListItem>
     );
@@ -84,7 +91,7 @@ function CateringCompanyCard({
         backgroundColor: 'transparent',
         boxShadow: 'none',
         overflow: 'visible',
-        padding: '16px',
+        padding: '12px',
       }}
     >
       <MDBox mt={1} mx={0.5} display="flex" alignItems="center">
@@ -126,7 +133,7 @@ function CateringCompanyCard({
             gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr)) !important',
             gridAutoColumns: 'minmax(240px, 1fr)',
             gap: '16px',
-            height: '230px',
+            height: '250px',
           }}
         >
           {renderMenus}

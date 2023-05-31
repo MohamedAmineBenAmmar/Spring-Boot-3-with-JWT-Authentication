@@ -32,9 +32,6 @@ const CateringCompanyMainPage = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDTypography variant="h3" textColor="white">
-        Catering Company Details
-      </MDTypography>
       <Grid container spacing={2}>
         {cateringCompanies.map((company) => (
           <Grid item xs={12} sm={6} key={company.id}>
