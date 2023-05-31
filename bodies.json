@@ -1,0 +1,58 @@
+// Catering Company body
+
+{
+  "companyName": "ABC Catering",
+  "contactInformation": {
+    "email": "info@abccatering.com",
+    "phone": "123456789",
+    "website": "test.com"
+  },
+  "menus": [
+    {
+      "name": "sun rise",
+      "menuType": "BREAKFAST",
+      "items": ["Eggs", "Bacon", "Toast"],
+      "pricePerServing": 10.99
+    },
+    {
+      "name": "Big mouth",
+      "menuType": "LUNCH",
+      "items": ["Sandwich", "Salad", "Chips"],
+      "pricePerServing": 12.99
+    },
+    {
+      "name": "moon landing",
+      "menuType": "DINNER",
+      "items": ["Steak", "Mashed Potatoes", "Vegetables"],
+      "pricePerServing": 19.99
+    }
+  ],
+  "delivery": true,
+  "capacity": 100,
+  "specialSpecifications": ["VEGETARIAN", "GLUTEN_FREE"]
+}
+
+// Flight Body
+{
+  "flightNumber": "ABC123",
+  "airline": "XYZ Airlines",
+  "departureAirport": "Airport A",
+  "arrivalAirport": "Airport B",
+  "departureTime": "2023-06-01T10:00:00",
+  "arrivalTime": "2023-06-01T12:00:00",
+  "seatsAvailable": 100,
+  "price": 250.0,
+  "menus": [
+    {
+      "id" : 1
+    }
+  ],
+  "pilot": { "id" : 1 },
+  "coPilot": {"id" : 1},
+  "flight_crew": [
+    {
+      "id": 1
+    }]
+  
+}
+

@@ -48,6 +48,7 @@ import ManageUser from "layouts/manage_user";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import ManageFlights from "layouts/flights";
 
 const routes = [
   {
@@ -88,7 +89,7 @@ const routes = [
     key: "manage_flights",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flights",
-    component: <ManageUser />, // TODO
+    component: <ManageFlights />, // TODO
   },
   // {
   //   type: "collapse",
