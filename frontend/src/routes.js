@@ -64,7 +64,7 @@ const routes = [
     key: "manage_flight_crew",
     icon: <Icon fontSize="small">badge</Icon>,
     route: "/flight_crew",
-    component: <ManageUser />,
+    component: <ManageUser role="flight-crew"/>,
   },
   {
     type: "collapse",
@@ -80,7 +80,7 @@ const routes = [
     key: "manage_catering",
     icon: <Icon fontSize="small">restaurant</Icon>,
     route: "/catering",
-    component: <ManageUser />,
+    component: <ManageUser />, // TODO
   },
   {
     type: "collapse",
@@ -88,7 +88,7 @@ const routes = [
     key: "manage_flights",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flights",
-    component: <ManageUser />,
+    component: <ManageUser />, // TODO
   },
   // {
   //   type: "collapse",

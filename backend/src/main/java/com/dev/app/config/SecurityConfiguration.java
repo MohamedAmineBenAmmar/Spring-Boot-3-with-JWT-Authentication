@@ -1,6 +1,9 @@
 package com.dev.app.config;
 
 import lombok.RequiredArgsConstructor;
+
+import java.beans.Customizer;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,7 +24,7 @@ public class SecurityConfiguration {
     // This bean is responsible for configuring all the HTTP security of our application
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.cors().and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()

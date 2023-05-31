@@ -31,16 +31,19 @@ import api from "api";
 
 export default function data() {
   const [data, setData] = useState([]);
-  useEffect(() => {
-    api.get("/user/all",{
-      withCredentials: true
-    })
-      .then((response) => setData(response.data))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
+  useEffect(()=>{
+    fetch("http://localhost:8080/api/user/all",{
+      method: 'get',
+      headers: new Headers({
+        "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY4NTI4NDg0NCwiZXhwIjoxNjg2NzI0ODQ0fQ.BoYHZF0L46aY5ovoInzk-RxieHkB0t8y_HyO1cm1Z9Y`
+
+      }),
+    }).then(resp=>{
+      setData(resp.text());
+      console.log(resp.text());
+    })
+  })
   const Author = ({ id, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       {/* <MDAvatar src={image} name={name} size="sm" /> */}
