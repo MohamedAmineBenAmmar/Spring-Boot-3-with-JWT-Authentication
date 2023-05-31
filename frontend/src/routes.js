@@ -48,7 +48,6 @@ import ManageUser from "layouts/manage_user";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import CateringCompanyMainPage from "layouts/catering_company/index.js";
 
 const routes = [
   {
@@ -81,8 +80,8 @@ const routes = [
     key: "manage_catering",
     icon: <Icon fontSize="small">restaurant</Icon>,
     route: "/catering",
-    component: <CateringCompanyMainPage/>
-    },
+    component: <ManageUser />, // TODO
+  },
   {
     type: "collapse",
     name: "Vols",
