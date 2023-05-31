@@ -48,6 +48,8 @@ import ManageUser from "layouts/manage_user";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import ManageFlights from "layouts/flights";
+import FlightData from "layouts/flights/flightDetails";
 
 const routes = [
   {
@@ -88,7 +90,15 @@ const routes = [
     key: "manage_flights",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flights",
-    component: <ManageUser />, // TODO
+    component: <ManageFlights />, // TODO
+  },
+  {
+    type: "collapse",
+    name: "Vols",
+    key: "flight_details",
+    icon: <Icon fontSize="small">flightTakeoff</Icon>,
+    route: "/flight_details",
+    component: <FlightData flightId="37" />, // TODO
   },
   // {
   //   type: "collapse",

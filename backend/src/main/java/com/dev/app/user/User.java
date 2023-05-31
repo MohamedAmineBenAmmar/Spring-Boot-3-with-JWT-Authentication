@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.dev.app.flight.Flight;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,11 +29,6 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING) // Telling that the role field is an enum
     private Role role; // We created the class in a way that the user have only one role
-
-
-    @OneToMany(mappedBy = "pilot")
-    private List<Flight> flights;
-
 
 
     @Override
