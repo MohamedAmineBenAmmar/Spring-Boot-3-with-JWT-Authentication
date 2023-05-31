@@ -1,21 +1,5 @@
 package com.dev.app.user;
-/*
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/api/user")
-public class UserController {
-
-    @GetMapping
-    public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hello World");
-    }
-}
-*/
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +20,7 @@ public class UserController {
 
     public UserController() {
     }
+    @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -46,6 +31,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         Optional<User> user = userRepository.findById(id);
@@ -54,6 +40,12 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/getAllUsersByRole/{role}")
+    public List<User> getAllUsersByRole(@PathVariable String role) {
+        Role userRole = Role.valueOf(role); // Convert the role String to Role enum
+        return userRepository.findAllByRole(userRole);
     }
 
     @PutMapping("/{id}")
