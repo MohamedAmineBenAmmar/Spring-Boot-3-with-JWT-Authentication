@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/flight/**").permitAll()
                 .requestMatchers("/api/user/all").hasRole("ADMIN") // Secure the endpoint with role-based authorization
                 .requestMatchers("/api/user/{id}").hasRole("ADMIN") // Secure the endpoint with role-based authorization
                 .anyRequest().authenticated()
