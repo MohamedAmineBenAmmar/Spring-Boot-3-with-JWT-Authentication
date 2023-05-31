@@ -6,7 +6,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import CardActionArea from '@mui/material/CardActionArea'; // Add this import
+import CardActionArea from '@mui/material/CardActionArea';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from '@mui/material/Typography';
@@ -23,52 +23,59 @@ function CateringCompanyCard({
   specialSpecifications,
   capacity,
 }) {
-    const renderMenus = menus.map((menu, index) => {
-        let menuTypeIcon = null;
-        if (menu.menuType === 'BREAKFAST') {
-          menuTypeIcon = <FreeBreakfastIcon />;
-        } else if (menu.menuType === 'LUNCH') {
-          menuTypeIcon = <FastfoodIcon />;
-        } else if (menu.menuType === 'DINNER') {
-          menuTypeIcon = <DinnerDiningIcon />;
-        }
-      
-        return (
-          <ImageListItem key={index}>
-            <Card
+  const renderMenus = menus.map((menu, index) => {
+    let menuTypeIcon = null;
+    if (menu.menuType === 'BREAKFAST') {
+      menuTypeIcon = <FreeBreakfastIcon />;
+    } else if (menu.menuType === 'LUNCH') {
+      menuTypeIcon = <FastfoodIcon />;
+    } else if (menu.menuType === 'DINNER') {
+      menuTypeIcon = <DinnerDiningIcon />;
+    }
+
+    const menuItems = menu.items.join(', ');
+
+    return (
+      <ImageListItem key={index}>
+        <Card
+          sx={{
+            display: 'inline-block',
+            borderRadius: 'md',
+            mx: 1,
+            boxShadow: '1px 4px 6px rgba(0, 0, 0, 0.1)',
+            overflow: 'visible',
+            height: '100%',
+          }}
+        >
+          <CardActionArea>
+            <CardContent
               sx={{
-                display: 'inline-block',
-                borderRadius: 'md',
-                mx: 1,
-                boxShadow: '1px 4px 6px rgba(0, 0, 0, 0.1)',
-                overflow: 'visible',
+                p: 3,
+                height: '180px',
               }}
             >
-              <CardActionArea>
-                <CardContent sx={{ p: 3 }}>
-                  <MDTypography variant="h5" gutterBottom>
-                    {menu.name}
-                  </MDTypography>
-                  <MDBox display="flex" alignItems="center" mb={2}>
-                    {menuTypeIcon}
-                    <MDTypography variant="body2" color="textSecondary" ml={1}>
-                      {menu.menuType}
-                    </MDTypography>
-                  </MDBox>
-                  <MDTypography variant="body2" color="textSecondary" mb={2}>
-                    {menu.items.join(', ')}
-                  </MDTypography>
-                  <MDTypography variant="subtitle2" color="primary" textAlign="center" mt={2}>
-                    ${menu.pricePerServing}
-                  </MDTypography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </ImageListItem>
-        );
-      });
-      
-      
+              <MDTypography variant="h5" gutterBottom>
+                {menu.name}
+              </MDTypography>
+              <MDBox display="flex" alignItems="center" mb={2}>
+                {menuTypeIcon}
+                <MDTypography variant="body2" color="textSecondary" ml={1}>
+                  {menu.menuType}
+                </MDTypography>
+              </MDBox>
+              <MDTypography variant="body2" color="textSecondary" mb={2}>
+                {menuItems}
+              </MDTypography>
+              <MDTypography variant="subtitle2" color="primary" textAlign="center" mt={2}>
+                ${menu.pricePerServing}
+              </MDTypography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </ImageListItem>
+    );
+  });
+
   return (
     <Card
       sx={{
@@ -85,7 +92,7 @@ function CateringCompanyCard({
           {companyName}
         </MDTypography>
         <MDBox ml="auto" display="flex" alignItems="center">
-          <LocalShippingIcon color ="primary" sx={{ mr: 0.5 }} />
+          <LocalShippingIcon color="primary" sx={{ mr: 0.5 }} />
           <MDTypography variant="body2" color="textSecondary">
             {delivery ? 'Available' : 'Not Available'}
           </MDTypography>
@@ -99,31 +106,32 @@ function CateringCompanyCard({
       <MDBox display="flex" alignItems="center" mb={2} ml={2}>
         {specialSpecifications.map((specification, index) => (
           <MDBox key={index} display="flex" alignItems="center" mr={1}>
-            <CheckIcon  color ="primary" sx={{ color: 'primary', mr: 0.5 }} />
+            <CheckIcon color="primary" sx={{ color: 'primary', mr: 0.5 }} />
             <MDTypography variant="body2" color="textSecondary">
               {specification}
             </MDTypography>
           </MDBox>
         ))}
         <MDBox display="flex" alignItems="center" ml={2}>
-          <RestaurantIcon  color ="primary" sx={{ color: 'primary', fontSize: 18, mr: 0.5 }} />
+          <RestaurantIcon color="primary" sx={{ color: 'primary', fontSize: 18, mr: 0.5 }} />
           <Typography variant="body2" color="textSecondary">
             {capacity}
           </Typography>
         </MDBox>
       </MDBox>
       <MDBox display="flex" overflow="auto">
-  <ImageList
-    sx={{
-      gridAutoFlow: 'column',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr)) !important',
-      gridAutoColumns: 'minmax(160px, 1fr)',
-    }}
-  >
-    {renderMenus}
-  </ImageList>
-</MDBox>
-
+        <ImageList
+          sx={{
+            gridAutoFlow: 'column',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr)) !important',
+            gridAutoColumns: 'minmax(240px, 1fr)',
+            gap: '16px',
+            height: '230px',
+          }}
+        >
+          {renderMenus}
+        </ImageList>
+      </MDBox>
     </Card>
   );
 }
