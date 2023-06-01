@@ -1,24 +1,6 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-/**
-  This file is used for controlling the global states of the components,
-  you can customize the states for the different components here.
-*/
-
-import { createContext, useContext, useReducer, useMemo } from "react";
+import { createContext, useContext, useReducer, useMemo, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -62,6 +44,9 @@ function reducer(state, action) {
     case "DARKMODE": {
       return { ...state, darkMode: action.value };
     }
+    case 'SET_TOKEN': {
+      return { ...state, token: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -81,11 +66,41 @@ function MaterialUIControllerProvider({ children }) {
     direction: "ltr",
     layout: "dashboard",
     darkMode: false,
+    token: null, // Add token as part of the initial state
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
+  const [token, setToken] = useState(localStorage.getItem("token")); // Add token state
+  
 
-  const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
+  const value = useMemo(() => [controller, dispatch, token, setToken], [controller, dispatch, token, setToken]);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (token) {
+      // Token is present at the localstorage
+      try {
+        var decoded = jwt_decode(token);
+        const currentTime = Date.now() / 1000;
+        let expired = decoded.exp < currentTime;
+        if (expired) {
+          setToken(null);
+          // Token is expired
+          navigate('/authentication/sign-in');
+        } else {
+          // Token is valid
+          navigate('/dashboard');
+        }
+      } catch (err) {
+        setToken(null);
+        // Token is invalid
+        navigate('/authentication/sign-in');
+      }
+    } else {
+      // Token is not present in the localstorage
+      navigate('/authentication/sign-in');
+    }
+  }, [])
 
   return <MaterialUI.Provider value={value}>{children}</MaterialUI.Provider>;
 }
@@ -119,6 +134,7 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
+const setToken = (dispatch, value) => dispatch({ type: 'SET_TOKEN', value });
 
 export {
   MaterialUIControllerProvider,
@@ -133,4 +149,5 @@ export {
   setDirection,
   setLayout,
   setDarkMode,
+  setToken,
 };

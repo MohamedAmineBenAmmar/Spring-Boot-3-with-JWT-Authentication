@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -29,15 +29,43 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 // Importing the sigin in
 import { signin } from "../../../services/authServices";
 
+// Accessing the global app context
+import { useMaterialUIController } from 'context';
+import { useNavigate } from 'react-router-dom'
+
+
 function Basic() {
+  const navigate = useNavigate();
+  const [controller, dispatch, token, setToken] = useMaterialUIController();
+
+
   const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
   const [user, setUser] = useState({});
+
   const handleChange = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
   };
+
+  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const handleSubmit = async (e) => {
+    signin(user).then((res) => {
+      // Singin successfull        
+      setToken(res.token);
+      // Set the token to the local storage
+      localStorage.setItem('token', res.token);
+      // redirect the user to the dashboard
+      navigate('/dashboard');
+    })
+      .catch((err) => {
+        console.log("error: ", err);
+      });
+  }
+
+  if (token) {
+    navigate('/dashboard');
+    return null;
+  }
 
   return (
     <BasicLayout image={bgImage}>
@@ -95,7 +123,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
                 sign in
               </MDButton>
             </MDBox>
@@ -112,6 +140,7 @@ function Basic() {
                 >
                   Sign up
                 </MDTypography>
+                <p>zebi: token: {token}</p>
               </MDTypography>
             </MDBox>
           </MDBox>
