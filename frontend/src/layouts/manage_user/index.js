@@ -26,9 +26,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-import {useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-
 // Data
 import data from "layouts/manage_user/data/authorsTableData";
 
@@ -36,9 +35,9 @@ function ManageUser(props) {
   const { pathname } = useLocation();
   const { columns, rows } = data(props);
   useEffect(() => {
-    console.log("the current location that the uer hit")
-    console.log(props.role)
-  }, [pathname])
+    console.log("the current location that the uer hit");
+    console.log(props.role);
+  }, [pathname]);
 
   return (
     <DashboardLayout>
@@ -56,9 +55,10 @@ function ManageUser(props) {
                 bgColor="info"
                 borderRadius="lg"
                 coloredShadow="info"
+                position="relative"
               >
                 <MDTypography variant="h6" color="white">
-                  Table d'utilisateur
+                  Users Table
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

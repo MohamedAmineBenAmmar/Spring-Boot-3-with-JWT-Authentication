@@ -20,7 +20,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDBadge from "components/MDBadge";
-import EditModal from "layouts/manage_user/data/modal.js"
+import EditModal from "layouts/manage_user/data/modal.js";
 import Icon from "@mui/material/Icon";
 import { IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -28,19 +28,18 @@ import CreateModal from "./createModal";
 
 function handleDelete(id, event) {
   event.preventDefault();
-  fetch('http://localhost:8080/api/user/' + id, {
-    method: 'DELETE',
+  fetch("http://localhost:8080/api/user/" + id, {
+    method: "DELETE",
     headers: new Headers({
-      "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
+      Authorization: `Bearer ` + localStorage.getItem("token"),
     }),
-
   })
-    .then(result => {
-      console.log('Success:', result);
+    .then((result) => {
+      console.log("Success:", result);
       window.location.reload();
     })
-    .catch(error => {
-      console.error('Error:', error);
+    .catch((error) => {
+      console.error("Error:", error);
     });
 }
 
@@ -52,7 +51,7 @@ function data(props) {
   };
 
   const handleSnackClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -63,23 +62,22 @@ function data(props) {
   var api = "";
 
   useEffect(() => {
-    api="http://localhost:8080/api/user/getAllUsersByRole/" + props.role;
+    api = "http://localhost:8080/api/user/getAllUsersByRole/" + props.role;
     fetchData();
   }, [props.role]);
 
   const fetchData = async () => {
     try {
       const response = await fetch(api, {
-        method: 'get',
+        method: "get",
         headers: new Headers({
-          "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
-
+          Authorization: `Bearer ` + localStorage.getItem("token"),
         }),
       });
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
   //   data = [{
@@ -116,7 +114,12 @@ function data(props) {
 
   const Job = ({ title, description }) => (
     <MDBox lineHeight={1} textAlign="left">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
+      <MDTypography
+        display="block"
+        variant="caption"
+        color="text"
+        fontWeight="medium"
+      >
         {title}
       </MDTypography>
       <MDTypography variant="caption">{description}</MDTypography>
@@ -131,40 +134,63 @@ function data(props) {
       // { Header: "employed", accessor: "employed", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],
-    rows: [...data.map(item => {
-      return {
-        User: <Author id={item.id} name={item.firstname + " " + item.lastname} email={item.email} />,
-        function: <Job title={item.role} description={item.description} />,
-        // status: (
-        //   <MDBox ml={-1}>
-        //     <MDBadge badgeContent={item.status} color="success" variant="gradient" size="sm" />
-        //   </MDBox>
-        // ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     {item.date}
-        //   </MDTypography>
-        // ),
+    rows: [
+      ...data.map((item) => {
+        return {
+          User: (
+            <Author
+              id={item.id}
+              name={item.firstname + " " + item.lastname}
+              email={item.email}
+            />
+          ),
+          function: <Job title={item.role} description={item.description} />,
+          // status: (
+          //   <MDBox ml={-1}>
+          //     <MDBadge badgeContent={item.status} color="success" variant="gradient" size="sm" />
+          //   </MDBox>
+          // ),
+          // employed: (
+          //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+          //     {item.date}
+          //   </MDTypography>
+          // ),
+          action: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <EditModal item={item}></EditModal>
+              <IconButton
+                variant="contained"
+                color="error"
+                onClick={(e) => handleDelete(item.id, e)}
+              >
+                <Icon fontSize="medium">close</Icon>
+              </IconButton>
+            </MDTypography>
+          ),
+        };
+      }),
+      {
         action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            <EditModal item={item}></EditModal>
-            <IconButton variant="contained" color="error" onClick={(e) => handleDelete(item.id, e)}>
-              <Icon fontSize="medium">close</Icon>
-            </IconButton>
+          <MDTypography
+            component="a"
+            href="#"
+            variant="caption"
+            color="text"
+            fontWeight="medium"
+          >
+            <CreateModal modalOpen={props.modalOpen}></CreateModal>
           </MDTypography>
         ),
-      };
-    }),
-    {
-      action: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-          <CreateModal></CreateModal>
-        </MDTypography>
-
-      )
-    }
-    ]
-  };;
+      },
+    ],
+  };
 }
 
 export default data;

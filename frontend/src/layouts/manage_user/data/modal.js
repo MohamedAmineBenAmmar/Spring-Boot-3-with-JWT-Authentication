@@ -40,7 +40,7 @@ export default function EditModal(props) {
             body: myjson,
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
+                "Authorization": `Bearer ` + localStorage.getItem('token'),
             }),
 
         })
@@ -65,8 +65,8 @@ export default function EditModal(props) {
 
     return (
         <div>
-            <IconButton variant="contained" color="warning" onClick={handleOpen}>
-                <Icon fontSize="medium">edit</Icon>
+            <IconButton variant="contained" color="secondary" onClick={handleOpen}>
+                <Icon fontSize="small">edit</Icon>
             </IconButton>
             <Modal
                 open={open}
@@ -88,9 +88,9 @@ export default function EditModal(props) {
                                     mb: 2,
                                 }}
                             >
-                                <Typography variant="h4">Form Title</Typography>
+                                <Typography variant="h4">Edit User</Typography>
                                 <IconButton onClick={handleClose}>
-                                    <Icon fontSize="small">logout</Icon>
+                                    <Icon fontSize="small">close</Icon>
                                 </IconButton>
                             </Box>
                             <form onSubmit={handleSubmit}>
@@ -136,7 +136,7 @@ export default function EditModal(props) {
                                     value={formState.role}
                                     onChange={handleFormChange}
                                 />
-                                <Button variant="contained" color="primary" type="submit" onClick={handleClose}>
+                                <Button variant="contained" color="primary" type="submit" onClick={handleClose} style={{ color: 'white' }}>
                                     Submit
                                 </Button>
                             </form>
