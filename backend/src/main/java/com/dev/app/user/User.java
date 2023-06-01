@@ -28,8 +28,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING) // Telling that the role field is an enum
-    private Role role; // We created the class in a way that the user have only one role
-
+    @Builder.Default
+    private Role role = Role.USER; // default value to fix the bug of the role field being null
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
