@@ -19,6 +19,7 @@ public class UserController {
 
     public UserController() {
     }
+
     @PreAuthorize("hasRole('ADMIN')") // Secure the endpoint with role-based authorization
     @GetMapping("/all")
     public List<User> getAllUsers() {
