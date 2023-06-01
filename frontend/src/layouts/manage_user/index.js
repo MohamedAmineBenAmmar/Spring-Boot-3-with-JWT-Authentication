@@ -28,10 +28,10 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "layouts/manage_user/data/authorsTableData";
+import data from "layouts/manage_user/data/authorsTableData";
 
-function ManageUser() {
-  const { columns, rows } = authorsTableData();
+function ManageUser(props) {
+  const { columns, rows } = data(props.role);
 
   return (
     <DashboardLayout>
@@ -51,7 +51,7 @@ function ManageUser() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Authors Table
+                  Stewards et hotesses
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

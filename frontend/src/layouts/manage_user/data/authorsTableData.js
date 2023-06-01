@@ -20,35 +20,70 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDBadge from "components/MDBadge";
-import { useState, useEffect } from "react";
+import EditModal from "layouts/manage_user/data/modal.js"
+import Icon from "@mui/material/Icon";
+import { IconButton } from "@mui/material";
 
-// Images
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+// import { useState, useEffect } from "react";
 
-import api from "api";
-
-export default function data() {
-  const [data, setData] = useState([]);
-
-  useEffect(()=>{
-    fetch("http://localhost:8080/api/user/all",{
-      method: 'get',
-      headers: new Headers({
-        "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY4NTI4NDg0NCwiZXhwIjoxNjg2NzI0ODQ0fQ.BoYHZF0L46aY5ovoInzk-RxieHkB0t8y_HyO1cm1Z9Y`
-
-      }),
-    }).then(resp=>{
-      setData(resp.text());
-      console.log(resp.text());
-    })
+function handleDelete(id ,event) {
+  event.preventDefault();
+  fetch('http://localhost:8080/api/user/' + id, {
+    method: 'DELETE',
   })
+  .then(response => response.json())
+  .then(result => {
+    console.log('Success:', result);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function data(role) {
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/user/all",{
+  //       method: 'get',
+  //       headers: new Headers({
+  //         "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhvbGEzQGdtYWlsLmNvbSIsImlhdCI6MTY4NTYxNDYyMSwiZXhwIjoxNjg3MDU0NjIxfQ.deMwGibHy-cZ7BcluZr8mPPZBx3o2rTOCcCGnPCOftY`
+  
+  //       }),
+  //     });
+  //     const jsonData = await response.json();
+  //     setData(jsonData);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+  data = [{
+    "id": 1,
+    "email":"hola1@gmail.com",
+    "firstname": "first",
+    "lastname": "last",
+    "role": "Steward"
+  },
+  {
+    "id": 2,
+    "email":"holii@gmail.com",
+    "firstname": "fedi",
+    "lastname": "tak",
+    "role": "Pilote"
+  }
+
+]
+
   const Author = ({ id, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       {/* <MDAvatar src={image} name={name} size="sm" /> */}
       <MDTypography display="block" fontWeight="medium" size="sm">
-          {1}
+          {id}
         </MDTypography>
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
@@ -68,40 +103,39 @@ export default function data() {
     </MDBox>
   );
 
-  const rowsmap = data.map((entry) => {
-    {
-      
-    }
-  });
-
   return {
     columns: [
-      { Header: "author", accessor: "author", width: "45%", align: "left" },
+      { Header: "User", accessor: "User", width: "45%", align: "left" },
       { Header: "function", accessor: "function", align: "left" },
-      { Header: "status", accessor: "status", align: "center" },
-      { Header: "employed", accessor: "employed", align: "center" },
+      // { Header: "status", accessor: "status", align: "center" },
+      // { Header: "employed", accessor: "employed", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],
     rows: data.map(item => {
       return {
-        author: <Author id={item.id} name={item.firstname} email={item.email} />,
-        function: <Job title={item.title} description={item.description} />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent={item.status} color="success" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.date}
-          </MDTypography>
-        ),
+        User: <Author id={item.id} name={item.firstname + " " +item.lastname} email={item.email} />,
+        function: <Job title={item.role} description={item.description} />,
+        // status: (
+        //   <MDBox ml={-1}>
+        //     <MDBadge badgeContent={item.status} color="success" variant="gradient" size="sm" />
+        //   </MDBox>
+        // ),
+        // employed: (
+        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+        //     {item.date}
+        //   </MDTypography>
+        // ),
         action: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
+            <EditModal item={item}></EditModal>
+            <IconButton variant="contained" color="error" onClick={(e) => handleDelete(item.id, e)}>
+                <Icon fontSize="medium">close</Icon>
+            </IconButton>
           </MDTypography>
         ),
       };
     })
   };;
 }
+
+export default data;
