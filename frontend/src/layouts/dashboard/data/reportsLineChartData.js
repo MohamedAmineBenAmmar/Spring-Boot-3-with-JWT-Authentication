@@ -15,8 +15,8 @@ Coded by www.creative-tim.com
 
 export default {
   sales: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Mobile apps", data: [50, 40, 300, 320, 500, 350, 200, 230, 500] },
+    labels: ["Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun"],
+    datasets: { label: "Mobile apps", data: [50, 40, 300, 320, 500, 350, 200] },
   },
   tasks: {
     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
