@@ -110,14 +110,13 @@ function AddCateringCompanyForm() {
       .map((key) => key.toUpperCase()),
   };
 
-  const bearerToken = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Im1vc2xlbUBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MTEwMDgsImV4cCI6MTY4NzA1MTAwOH0.3ftGTel_7bSXsPoGTX24sok7qJFCjqxQu1KbxvVI-ok';
   
 
     fetch('http://localhost:8080/api/catering', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${bearerToken}`,
+        Authorization: `Bearer ` + localStorage.getItem('token'),
       },
       body: JSON.stringify(payload),
     })
