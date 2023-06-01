@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import MDTypography from 'components/MDTypography';
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import CateringCompanyCard from './comp.js';
 import Grid from '@mui/material/Grid';
+import { Button, Box, Typography } from '@mui/material';
+import { Link,useNavigate } from 'react-router-dom';
 
 const CateringCompanyMainPage = () => {
   const [cateringCompanies, setCateringCompanies] = useState([]);
-
+    const navigation = useNavigate
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,10 +29,20 @@ const CateringCompanyMainPage = () => {
 
     fetchData();
   }, []);
+const handleRedirection = ()=>{
+    navigation("/catering-form")
+}
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <Box display="flex" justifyContent="flex-end" p={2}>
+      <Button onClick={handleRedirection} variant="contained" color="primary" >
+      <Typography variant="body2" color="#ffebee">
+            add catering company
+          </Typography>
+    </Button>
+      </Box>
       <Grid container spacing={2}>
         {cateringCompanies.map((company) => (
           <Grid item xs={12} sm={6} key={company.id}>
