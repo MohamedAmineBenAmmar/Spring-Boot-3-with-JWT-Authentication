@@ -55,12 +55,12 @@ public class Flight {
     inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pilot_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pilot_id", referencedColumnName = "id")
     private User pilot;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "copilot_id")
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "copilot_id", referencedColumnName = "id")
     private User coPilot;
 
     @ManyToMany(fetch = FetchType.EAGER)

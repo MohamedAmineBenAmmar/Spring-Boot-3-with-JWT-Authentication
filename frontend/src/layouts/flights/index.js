@@ -1,21 +1,7 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -28,10 +14,10 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import data from "layouts/manage_user/data/authorsTableData";
+import flightsTableData from "layouts/flights/data/flightsTableData";
 
-function ManageUser(props) {
-  const { columns, rows } = data(props.role);
+function ManageFlights() {
+  const { columns, rows } = flightsTableData();
 
   return (
     <DashboardLayout>
@@ -49,10 +35,23 @@ function ManageUser(props) {
                 bgColor="info"
                 borderRadius="lg"
                 coloredShadow="info"
+                position="relative"
               >
                 <MDTypography variant="h6" color="white">
-                  Stewards et hotesses
+                  Flights Table
                 </MDTypography>
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  sx={{
+                    position: "absolute",
+                    top: -16,
+                    right: 16,
+                    zIndex: 1,
+                  }}
+                >
+                  <AddIcon />
+                </Fab>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
@@ -72,4 +71,4 @@ function ManageUser(props) {
   );
 }
 
-export default ManageUser;
+export default ManageFlights;

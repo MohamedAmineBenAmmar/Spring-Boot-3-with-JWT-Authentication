@@ -50,6 +50,10 @@ import ManageUser from "layouts/manage_user";
 import Icon from "@mui/material/Icon";
 import CateringCompanyMainPage from "layouts/catering_company";
 
+import ManageFlights from "layouts/flights";
+import FlightData from "layouts/flights/flightDetails";
+import CreateFlightForm from "layouts/flights/flightCreate";
+
 const routes = [
   {
     type: "collapse",
@@ -65,7 +69,7 @@ const routes = [
     key: "manage_flight_crew",
     icon: <Icon fontSize="small">badge</Icon>,
     route: "/flight_crew",
-    component: <ManageUser role="flight-crew"/>,
+    component: <ManageUser role="flight_crew"/>,
   },
   {
     type: "collapse",
@@ -89,7 +93,23 @@ const routes = [
     key: "manage_flights",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flights",
-    component: <ManageUser />, // TODO
+    component: <ManageFlights />, // TODO
+  },
+  {
+    type: "collapse",
+    name: "Vols",
+    key: "flight_details",
+    icon: <Icon fontSize="small">flightTakeoff</Icon>,
+    route: "/flight_details",
+    component: <FlightData flightId="30" />, // TODO
+  },
+  {
+    type: "collapse",
+    name: "Vols",
+    key: "flight_details",
+    icon: <Icon fontSize="small">flightTakeoff</Icon>,
+    route: "/flight_create",
+    component: <CreateFlightForm flightId="30" />, // TODO
   },
   // {
   //   type: "collapse",
