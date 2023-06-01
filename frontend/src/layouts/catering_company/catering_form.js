@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, TextField, Box, Container, Typography, InputLabel, FormControlLabel, Checkbox, Select, MenuItem, FormControl, Grid } from '@mui/material';
+import { Button, TextField, Box,Snackbar, Container, Typography, InputLabel, FormControlLabel, Checkbox, Select, MenuItem, FormControl, Grid } from '@mui/material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import MuiAlert from '@mui/material/Alert';
 const initialFormValues = {
   companyName: '',
   contactInformation: {
@@ -31,7 +31,7 @@ const initialFormValues = {
 
 function AddCateringCompanyForm() {
   const [formValues, setFormValues] = useState(initialFormValues);
-
+  const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
   const handleInputChange = (event, field) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -95,7 +95,9 @@ function AddCateringCompanyForm() {
       },
     }));
   };
-
+  const handleSnackbarClose = () => {
+    setNotification({ ...notification, open: false });
+  };
   const handleFormSubmit = (event) => {
     event.preventDefault();
     
@@ -107,9 +109,9 @@ function AddCateringCompanyForm() {
       .map((key) => key.toUpperCase()),
   };
 
-  // Replace 'YOUR_BEARER_TOKEN' with your actual bearer token
   const bearerToken = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Im1vc2xlbUBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MTEwMDgsImV4cCI6MTY4NzA1MTAwOH0.3ftGTel_7bSXsPoGTX24sok7qJFCjqxQu1KbxvVI-ok';
-console.log(payload)
+  
+
     fetch('http://localhost:8080/api/catering', {
       method: 'POST',
       headers: {
@@ -120,7 +122,7 @@ console.log(payload)
     })
     .then((response) => {
         if (response.ok) {
-            console.log(response.status)
+          setNotification({ open: true, message: 'Catering company added successfully', severity: 'success' });
           // Reset the form values
           setFormValues(initialFormValues);
           // Trigger any additional actions or notifications upon successful form submission
@@ -138,6 +140,11 @@ console.log(payload)
 
   return (
     <Container maxWidth="sm">
+        <Snackbar open={notification.open} autoHideDuration={3000} onClose={() => setNotification({ ...notification, open: false })}>
+      <MuiAlert onClose={() => setNotification({ ...notification, open: false })} severity={notification.severity} elevation={6} variant="filled">
+        {notification.message}
+      </MuiAlert>
+    </Snackbar>
       <Box mt={4} mb={2}>
         <Typography variant="h4" align="center">
           Add Catering Company
@@ -386,6 +393,11 @@ console.log(payload)
           <span style={{ marginLeft: '5px', color: 'white' }}>Submit</span>
         </Button>
       </form>
+      <Snackbar open={notification.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
+          <MuiAlert onClose={handleSnackbarClose} severity={notification.severity} elevation={6} variant="filled">
+            {notification.message}
+          </MuiAlert>
+        </Snackbar>
     </Container>
   );
 }
