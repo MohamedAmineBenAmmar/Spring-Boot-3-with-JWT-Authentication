@@ -78,6 +78,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Copilotes",
+    key: "manage_copilots",
+    icon: <Icon fontSize="small">flight</Icon>,
+    route: "/copilots",
+    component: <ManageUser role="COPILOT"/>,
+  },
+  {
+    type: "collapse",
     name: "Restauration",
     key: "manage_catering",
     icon: <Icon fontSize="small">restaurant</Icon>,
