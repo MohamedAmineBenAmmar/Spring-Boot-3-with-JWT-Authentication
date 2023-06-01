@@ -3,6 +3,7 @@ import { Button, TextField, Box,Snackbar, Container, Typography, InputLabel, For
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MuiAlert from '@mui/material/Alert';
+
 const initialFormValues = {
   companyName: '',
   contactInformation: {
@@ -126,7 +127,7 @@ function AddCateringCompanyForm() {
           // Reset the form values
           setFormValues(initialFormValues);
           // Trigger any additional actions or notifications upon successful form submission
-          onFormSubmit();
+       //   onFormSubmit();
         } else {
           throw new Error('Request failed');
         }
