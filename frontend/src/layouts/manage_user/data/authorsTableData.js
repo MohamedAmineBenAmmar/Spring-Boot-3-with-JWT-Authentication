@@ -23,68 +23,88 @@ import MDBadge from "components/MDBadge";
 import EditModal from "layouts/manage_user/data/modal.js"
 import Icon from "@mui/material/Icon";
 import { IconButton } from "@mui/material";
+import { useState, useEffect } from "react";
+import CreateModal from "./createModal";
 
-// import { useState, useEffect } from "react";
-
-function handleDelete(id ,event) {
+function handleDelete(id, event) {
   event.preventDefault();
   fetch('http://localhost:8080/api/user/' + id, {
     method: 'DELETE',
+    headers: new Headers({
+      "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
+    }),
+
   })
-  .then(response => response.json())
-  .then(result => {
-    console.log('Success:', result);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+    .then(result => {
+      console.log('Success:', result);
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
-function data(role) {
-  // const [data, setData] = useState([]);
+function data(props) {
+  const [openSnack, setOpenSnack] = useState(false);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  const handleSnackClick = () => {
+    setOpenSnack(true);
+  };
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8080/api/user/all",{
-  //       method: 'get',
-  //       headers: new Headers({
-  //         "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhvbGEzQGdtYWlsLmNvbSIsImlhdCI6MTY4NTYxNDYyMSwiZXhwIjoxNjg3MDU0NjIxfQ.deMwGibHy-cZ7BcluZr8mPPZBx3o2rTOCcCGnPCOftY`
-  
-  //       }),
-  //     });
-  //     const jsonData = await response.json();
-  //     setData(jsonData);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
+  const handleSnackClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+
+  const [data, setData] = useState([]);
+  var api = "";
+
+  useEffect(() => {
+    api="http://localhost:8080/api/user/getAllUsersByRole/" + props.role;
+    fetchData();
+  }, [props.role]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(api, {
+        method: 'get',
+        headers: new Headers({
+          "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
+
+        }),
+      });
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  //   data = [{
+  //     "id": 1,
+  //     "email":"hola1@gmail.com",
+  //     "firstname": "first",
+  //     "lastname": "last",
+  //     "role": "Steward"
+  //   },
+  //   {
+  //     "id": 2,
+  //     "email":"holii@gmail.com",
+  //     "firstname": "fedi",
+  //     "lastname": "tak",
+  //     "role": "Pilote"
   //   }
-  // };
-  data = [{
-    "id": 1,
-    "email":"hola1@gmail.com",
-    "firstname": "first",
-    "lastname": "last",
-    "role": "Steward"
-  },
-  {
-    "id": 2,
-    "email":"holii@gmail.com",
-    "firstname": "fedi",
-    "lastname": "tak",
-    "role": "Pilote"
-  }
 
-]
+  // ]
 
   const Author = ({ id, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       {/* <MDAvatar src={image} name={name} size="sm" /> */}
       <MDTypography display="block" fontWeight="medium" size="sm">
-          {id}
-        </MDTypography>
+        {id}
+      </MDTypography>
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {name}
@@ -113,7 +133,7 @@ function data(role) {
     ],
     rows: [...data.map(item => {
       return {
-        User: <Author id={item.id} name={item.firstname + " " +item.lastname} email={item.email} />,
+        User: <Author id={item.id} name={item.firstname + " " + item.lastname} email={item.email} />,
         function: <Job title={item.role} description={item.description} />,
         // status: (
         //   <MDBox ml={-1}>
@@ -129,20 +149,21 @@ function data(role) {
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             <EditModal item={item}></EditModal>
             <IconButton variant="contained" color="error" onClick={(e) => handleDelete(item.id, e)}>
-                <Icon fontSize="medium">close</Icon>
+              <Icon fontSize="medium">close</Icon>
             </IconButton>
           </MDTypography>
         ),
       };
     }),
-    {action: (
-      <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        <IconButton variant="contained" color="secondary">
-            <Icon fontSize="large">add</Icon>
-        </IconButton>
-      </MDTypography>
-    )}
-  ]
+    {
+      action: (
+        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+          <CreateModal></CreateModal>
+        </MDTypography>
+
+      )
+    }
+    ]
   };;
 }
 

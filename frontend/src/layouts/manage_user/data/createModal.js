@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import {
-    Button, Modal, Fade, TextField, Box, Typography, IconButton, Snackbar,
+    Button, Modal, Fade, TextField, Box, Typography, IconButton,
 } from '@mui/material';
 import Icon from "@mui/material/Icon";
-import Snackbar2 from './snackbar';
 
-export default function EditModal(props) {
+export default function CreateModal() {
 
     const [formState, setFormState] = useState({
-        email: props.item.email,
-        firstname: props.item.firstname,
-        lastname: props.item.lastname,
-        role: props.item.role,
+        email: '',
+        firstname: '',
+        lastname: '',
+        role: '',
     })
 
     const handleFormChange = (event) => {
@@ -35,8 +34,8 @@ export default function EditModal(props) {
         };
         const myjson = JSON.stringify(formData)
         console.log(myjson)
-        fetch('http://localhost:8080/api/user/' + props.item.id, {
-            method: 'PUT',
+        fetch('http://localhost:8080/api/user', {
+            method: 'POST',
             body: myjson,
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -44,10 +43,10 @@ export default function EditModal(props) {
             }),
 
         })
-            .then(result => {
-                console.log('Success:', result);
-                window.location.reload();
-            })
+        .then(result => {
+            console.log('Success:', result);
+            window.location.reload();
+        })
             .catch(error => {
                 console.error('Error:', error);
             });
@@ -65,9 +64,10 @@ export default function EditModal(props) {
 
     return (
         <div>
-            <IconButton variant="contained" color="warning" onClick={handleOpen}>
-                <Icon fontSize="medium">edit</Icon>
+                <IconButton variant="contained" color="secondary" onClick={handleOpen}>
+                <Icon fontSize="large">add</Icon>
             </IconButton>
+            
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -88,7 +88,8 @@ export default function EditModal(props) {
                                     mb: 2,
                                 }}
                             >
-                                <Typography variant="h4">Form Title</Typography>
+
+                                <Typography variant="h4">User Edit</Typography>
                                 <IconButton onClick={handleClose}>
                                     <Icon fontSize="small">logout</Icon>
                                 </IconButton>
@@ -98,9 +99,9 @@ export default function EditModal(props) {
                                     name='firstname'
                                     label="First name"
                                     variant="outlined"
-                                    fullWidth
+                                    fullWidthvariable
                                     margin="normal"
-                                    placeholder={props.item.firstname}
+                                    
                                     value={formState.firstname}
                                     onChange={handleFormChange}
 
@@ -111,7 +112,7 @@ export default function EditModal(props) {
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
-                                    placeholder={props.item.lastname}
+                                    
                                     value={formState.lastname}
                                     onChange={handleFormChange}
                                 />
@@ -122,7 +123,7 @@ export default function EditModal(props) {
                                     type='Email'
                                     fullWidth
                                     margin="normal"
-                                    placeholder={props.item.email}
+                                    
                                     value={formState.email}
                                     onChange={handleFormChange}
                                 />
@@ -132,7 +133,7 @@ export default function EditModal(props) {
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
-                                    placeholder={props.item.role}
+                                    
                                     value={formState.role}
                                     onChange={handleFormChange}
                                 />

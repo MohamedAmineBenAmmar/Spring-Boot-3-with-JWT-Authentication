@@ -69,7 +69,7 @@ const routes = [
     key: "manage_flight_crew",
     icon: <Icon fontSize="small">badge</Icon>,
     route: "/flight_crew",
-    component: <ManageUser role="flight_crew"/>,
+    component: <ManageUser role="FLIGHT_CREW"/>,
   },
   {
     type: "collapse",
@@ -77,7 +77,15 @@ const routes = [
     key: "manage_pilots",
     icon: <Icon fontSize="small">flight</Icon>,
     route: "/pilots",
-    component: <ManageUser />,
+    component: <ManageUser role="PILOT"/>,
+  },
+  {
+    type: "collapse",
+    name: "Copilotes",
+    key: "manage_copilots",
+    icon: <Icon fontSize="small">flight</Icon>,
+    route: "/copilots",
+    component: <ManageUser role="COPILOT"/>,
   },
   {
     type: "collapse",
