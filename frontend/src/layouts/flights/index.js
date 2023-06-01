@@ -15,10 +15,15 @@ import DataTable from "examples/Tables/DataTable";
 
 // Data
 import flightsTableData from "layouts/flights/data/flightsTableData";
+import { useNavigate } from 'react-router-dom'
 
 function ManageFlights() {
   const { columns, rows } = flightsTableData();
+  const navigate = useNavigate();
 
+  const handleRedirection = () => {
+    navigate('/flights/create');
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -49,6 +54,7 @@ function ManageFlights() {
                     right: 16,
                     zIndex: 1,
                   }}
+                  onClick={handleRedirection}
                 >
                   <AddIcon />
                 </Fab>

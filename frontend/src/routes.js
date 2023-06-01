@@ -101,7 +101,7 @@ const routes = [
     key: "flight_details",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flight_details",
-    component: <FlightData flightId="30" />, // TODO
+    component: <FlightData flightId="1" />, // TODO
   },
   {
     type: "collapse",
