@@ -45,7 +45,7 @@ export default function FlightDetail({ flightId }) {
       method: "get",
       headers: new Headers({
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hQGdtYWlsLmNvbSIsImlhdCI6MTY4NTU2NzAzMCwiZXhwIjoxNjg3MDA3MDMwfQ.ApDxX80FLh8asL-PloMUhvSYG2nFXut98n4I715XSOQ",
+          `Bearer ` + localStorage.getItem("token"),
       }),
     })
       .then((response) => response.json())

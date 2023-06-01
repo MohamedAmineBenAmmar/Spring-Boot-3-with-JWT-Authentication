@@ -26,9 +26,8 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Im1vc2xlbUBnbWFpbC5jb20iLCJpYXQiOjE2ODU2NTk0NDAsImV4cCI6MTY4NzA5OTQ0MH0.45r8flJZAW6h7FwfMcVTHDJJqpee8PlK-B6DQhwIqsQ';
       const headers = {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ` + localStorage.getItem('token'),
         'Content-Type': 'application/json'
       };
 
