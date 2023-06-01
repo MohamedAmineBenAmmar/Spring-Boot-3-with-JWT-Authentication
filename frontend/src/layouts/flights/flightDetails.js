@@ -1,24 +1,41 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import CardActionArea from "@mui/material/CardActionArea";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import CheckIcon from "@mui/icons-material/Check";
-import Typography from "@mui/material/Typography";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
 import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocalAirportIcon from "@mui/icons-material/LocalAirport";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import PersonIcon from "@mui/icons-material/Person";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import MDTypography from "components/MDTypography";
+import MDBox from "components/MDBox";
+import moment from "moment";
 
-import { useState, useEffect } from "react";
+// New component to render two attributes in one row
+const FlightAttributeRow = ({ icon1, label1, value1, icon2, label2, value2 }) => (
+  <MDBox mb={2} ml={2} display="flex">
+    <MDBox flex={1} display="flex" alignItems="center">
+      {icon1}
+      <MDTypography variant="body2" color="textSecondary" ml={1}>
+        {label1}: {value1}
+      </MDTypography>
+    </MDBox>
+    <MDBox flex={1} display="flex" alignItems="center">
+      {icon2}
+      <MDTypography variant="body2" color="textSecondary" ml={1}>
+        {label2}: {value2}
+      </MDTypography>
+    </MDBox>
+  </MDBox>
+);
 
 export default function FlightDetail({ flightId }) {
   const [flight, setFlight] = useState(null);
@@ -45,8 +62,6 @@ export default function FlightDetail({ flightId }) {
     let menuTypeIcon = null;
     if (menu.menuType === "BREAKFAST") {
       menuTypeIcon = <FreeBreakfastIcon />;
-    } else if (menu.menuType === "LUNCH") {
-      menuTypeIcon = <FastfoodIcon />;
     } else if (menu.menuType === "DINNER") {
       menuTypeIcon = <DinnerDiningIcon />;
     }
@@ -96,50 +111,69 @@ export default function FlightDetail({ flightId }) {
 
   return (
     <DashboardLayout>
-    <DashboardNavbar />
+      <DashboardNavbar />
 
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "transparent",
-        boxShadow: "none",
-        overflow: "visible",
-        padding: "16px",
-      }}
-    >
-      <MDBox mt={1} mx={0.5} display="flex" alignItems="center">
-        <MDTypography variant="h4" textTransform="capitalize">
-          {flight.flightNumber}
-        </MDTypography>
-      </MDBox>
-      <MDBox mb={3} lineHeight={0} ml={2}>
-        <MDTypography variant="body2" color="textSecondary">
-            dsq
-        </MDTypography>
-      </MDBox>
-      <MDBox display="flex" alignItems="center" mb={2} ml={2}>
-        <MDBox display="flex" alignItems="center" ml={2}>
-        <AttachMoneyIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />
-          <Typography variant="body2" color="textSecondary">
-            {flight.price} DT
-          </Typography>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          overflow: "visible",
+          padding: "16px",
+        }}
+      >
+        <MDBox mt={1} mx={0.5} display="flex" alignItems="center">
+          <MDTypography variant="h4" textTransform="capitalize">
+            {flight.flightNumber}
+          </MDTypography>
         </MDBox>
-      </MDBox>
-      <MDBox display="flex" overflow="auto">
+        <MDBox mb={3} lineHeight={0} ml={2}>
+          <MDTypography variant="body2" color="textSecondary">
+            {flight.airline}
+          </MDTypography>
+        </MDBox>
+        <FlightAttributeRow
+          icon1={<AirportShuttleIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label1="Departure Airport"
+          value1={flight.departureAirport}
+          icon2={<LocalAirportIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label2="Arrival Airport"
+          value2={flight.arrivalAirport}
+        />
+        <FlightAttributeRow
+          icon1={<AccessTimeIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label1="Departure Time"
+          value1={moment(flight.departureTime).format("DD MMM YYYY, HH:mm")}
+          icon2={<AccessTimeIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label2="Arrival Time"
+          value2={moment(flight.arrivalTime).format("DD MMM YYYY, HH:mm")}
+        />
+        <FlightAttributeRow
+          icon1={<LocalOfferIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label1="Seats Available"
+          value1={flight.seatsAvailable}
+          icon2={<AttachMoneyIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label2="Price"
+          value2={flight.price}
+        />
+        <FlightAttributeRow
+          icon1={<PersonIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label1="Pilot"
+          value1={flight.pilot.firstname + " " + flight.pilot.lastname}
+          icon2={<PersonIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label2="Co-pilot"
+          value2={flight.coPilot.firstname + " " + flight.coPilot.lastname}
+        />
+        <MDTypography variant="h6" mt={4} mb={2}>
+          Menus
+        </MDTypography>
         <ImageList
-          sx={{
-            gridAutoFlow: "column",
-            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr)) !important",
-            gridAutoColumns: "minmax(240px, 1fr)",
-            gap: "16px",
-            height: "230px",
-          }}
+          sx={{ flexWrap: "nowrap", transform: "translateZ(0)", overflowX: "auto", mb: 2 }}
         >
           {renderMenus}
         </ImageList>
-      </MDBox>
-    </Card>
+      </Card>
     </DashboardLayout>
   );
 }
