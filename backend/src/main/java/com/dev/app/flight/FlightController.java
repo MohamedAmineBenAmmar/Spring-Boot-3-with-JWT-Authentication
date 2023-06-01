@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -76,5 +79,44 @@ public class FlightController {
         return flightRepository.findByAirline(airline);
     }
 
+    @GetMapping("/count-today")
+    public ResponseEntity<Long> getTodayFlightsCount() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59); // Set the end time to 23:59:59
+        long count = flightRepository.countByDepartureTimeBetween(startOfDay, endOfDay);
+        return ResponseEntity.ok(count);
+    }
 
+    @GetMapping("/count-today-passengers")
+    public ResponseEntity<Integer> countTodayPassengers() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+        int totalPassengers = flightRepository.sumSeatsAvailableByDepartureTimeBetween(startOfDay, endOfDay);
+        return ResponseEntity.ok(totalPassengers);
+    }
+
+    @GetMapping("/count-today-revenue")
+    public ResponseEntity<Double> countTodayRevenue() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+        double totalRevenue = flightRepository.sumPriceByDepartureTimeBetween(startOfDay, endOfDay);
+        return ResponseEntity.ok(totalRevenue);
+    }
+
+    @GetMapping("/count-upcoming-passengers")
+    public ResponseEntity<Integer> countUpcomingPassengers() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+
+        LocalDate endOfYear = tomorrow.withDayOfYear(365);
+        LocalDateTime startOfDay = tomorrow.atStartOfDay();
+        LocalDateTime endOfYearday = endOfYear.atTime(23, 59, 59);
+
+        int totalPassengers = flightRepository.sumSeatsAvailableByDepartureTimeBetween(startOfDay, endOfYearday);
+        return ResponseEntity.ok(totalPassengers);
+    }
+
+    
 }
