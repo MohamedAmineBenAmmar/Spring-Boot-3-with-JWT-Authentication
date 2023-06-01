@@ -48,6 +48,8 @@ import ManageUser from "layouts/manage_user";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import CateringCompanyMainPage from "layouts/catering_company";
+
 import ManageFlights from "layouts/flights";
 import FlightData from "layouts/flights/flightDetails";
 import CreateFlightForm from "layouts/flights/flightCreate";
@@ -83,7 +85,7 @@ const routes = [
     key: "manage_catering",
     icon: <Icon fontSize="small">restaurant</Icon>,
     route: "/catering",
-    component: <ManageUser />, // TODO
+    component: <CateringCompanyMainPage />,
   },
   {
     type: "collapse",
