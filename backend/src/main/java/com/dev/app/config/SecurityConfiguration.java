@@ -31,8 +31,9 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
+               // .requestMatchers("/api/user/**").permitAll()
                 .requestMatchers("/api/user/all").hasRole("ADMIN") // Secure the endpoint with role-based authorization
-                .requestMatchers("/api/user/{id}").hasRole("ADMIN") // Secure the endpoint with role-based authorization
+                // .requestMatchers("/api/user/{id}").hasRole("ADMIN") // Secure the endpoint with role-based authorization
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -49,6 +50,14 @@ public class SecurityConfiguration {
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
+            System.out.println("The request object header");
+            // Print the request headers:
+            request.getHeaderNames().asIterator().forEachRemaining(headerName -> {
+                System.out.println(headerName + ": " + request.getHeader(headerName));
+            });
+
+            System.out.println("The response object header ------");
+
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"ACCESS_DENIED:" + accessDeniedException.getMessage() + "\"}");
