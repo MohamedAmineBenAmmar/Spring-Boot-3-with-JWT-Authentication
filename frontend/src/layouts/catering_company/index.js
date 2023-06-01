@@ -77,11 +77,19 @@ const handleRedirection = ()=>{
     </Button>
       </Box>
       <Grid container spacing={2}>
-        {cateringCompanies.map((company) => (
-          <Grid item xs={12} sm={6} key={company.id}>
-            <CateringCompanyCard {...company}  onDelete={() => handleDelete(company.id)} />
-          </Grid>
-        ))}
+      {cateringCompanies.length > 0 ? (
+        <Grid container spacing={2}>
+          {cateringCompanies.map((company) => (
+            <Grid item xs={12} sm={6} key={company.id}>
+              <CateringCompanyCard {...company} onDelete={() => handleDelete(company.id)} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography variant="h6" align="center">
+          No catering companies found.
+        </Typography>
+      )}
       </Grid>
     </DashboardLayout>
   );
