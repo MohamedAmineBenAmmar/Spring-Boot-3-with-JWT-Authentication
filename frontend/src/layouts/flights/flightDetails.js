@@ -45,7 +45,7 @@ export default function FlightDetail({ flightId }) {
       method: "get",
       headers: new Headers({
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hMkBnbWFpbC5jb20iLCJpYXQiOjE2ODU0NTA1NTYsImV4cCI6MTY4Njg5MDU1Nn0.60Uwq2IyNtIxu8tBh1_UvdCncPW4zJZ-mV-UKFpaLag",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hQGdtYWlsLmNvbSIsImlhdCI6MTY4NTU2NzAzMCwiZXhwIjoxNjg3MDA3MDMwfQ.ApDxX80FLh8asL-PloMUhvSYG2nFXut98n4I715XSOQ",
       }),
     })
       .then((response) => response.json())

@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -54,8 +39,11 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 import TestComponent from "layouts/catering_company/test";
+import FlightCreate from "layouts/flights/flightCreate";
 
 export default function App() {
+
+
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -148,6 +136,15 @@ export default function App() {
     </MDBox>
   );
 
+  
+  useEffect(() => {
+    console.log("the current location that the uer hit")
+    console.log(pathname)
+    if(pathname.length > 1) {
+      localStorage.setItem("lastLocation", pathname);
+    }
+  }, [pathname])
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -170,6 +167,7 @@ export default function App() {
         <Routes>
           {getRoutes(routes)}
           <Route exact path="/catering-form" element={<TestComponent/>} />
+          <Route exact path="/flights/create" element={<FlightCreate/>} />
          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
@@ -195,6 +193,7 @@ export default function App() {
       <Routes>
         {getRoutes(routes)}
         <Route exact path="/catering-form" element={<TestComponent/>} />
+        <Route exact path="/flights/create" element={<FlightCreate/>} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>

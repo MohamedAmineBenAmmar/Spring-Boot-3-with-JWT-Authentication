@@ -2,19 +2,17 @@ import MDTypography from "components/MDTypography";
 import { useState, useEffect } from "react";
 import moment from "moment";
 
+import { getFlights } from '../../../services/flightServices'
+
 export default function FlightData() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/flight/all", {
-      method: "get",
-      headers: new Headers({
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hMkBnbWFpbC5jb20iLCJpYXQiOjE2ODU0NTA1NTYsImV4cCI6MTY4Njg5MDU1Nn0.60Uwq2IyNtIxu8tBh1_UvdCncPW4zJZ-mV-UKFpaLag`,
-      }),
+    getFlights().then((res) => {
+      setData(res);
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
+      .catch((err) => {
+        console.log("error: ", err);
       });
   }, []);
 
