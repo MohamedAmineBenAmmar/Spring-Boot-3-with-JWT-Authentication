@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Button, TextField, Box, Container, Typography,InputLabel, FormControlLabel, Checkbox, Select, MenuItem, FormControl } from '@mui/material';
+import { Button, TextField, Box, Container, Typography, InputLabel, FormControlLabel, Checkbox, Select, MenuItem, FormControl, Grid } from '@mui/material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AddIcon from '@mui/icons-material/Add';
 
 const initialFormValues = {
   companyName: '',
@@ -25,8 +23,8 @@ const initialFormValues = {
   specialSpecifications: {
     vegetarian: false,
     vegan: false,
-    glutenFree: false,
-    lactoseFree: false,
+    gluten_Free: false,
+    lactose_Free: false,
     halal: false,
   },
 };
@@ -106,7 +104,7 @@ function AddCateringCompanyForm() {
       ...formValues,
       specialSpecifications: Object.keys(formValues.specialSpecifications)
       .filter((key) => formValues.specialSpecifications[key])
-      .map((checkboxName) => checkboxName.toUpperCase()),
+      .map((key) => key.toUpperCase()),
   };
 
   // Replace 'YOUR_BEARER_TOKEN' with your actual bearer token
@@ -205,40 +203,46 @@ console.log(payload)
     <Typography variant="subtitle1" gutterBottom>
       Menu {menuIndex + 1}
     </Typography>
-    <TextField
-      name="name"
-      label="Menu Name"
-      value={menu.name}
-      onChange={(event) => handleMenuInputChange(event, menuIndex)}
-      required
-      fullWidth
-      sx={{ mb: 1 }}
-    />
-<FormControl fullWidth>
-          <InputLabel id={`menu-${menuIndex}-type-label`}>
-            {menu.menuType ? '' : 'Choose Menu Type'}
-          </InputLabel>
-          <Select
-            id={`menu-${menuIndex}-type`}
-            name="menuType"
-            value={menu.menuType}
-            onChange={(event) => handleMenuInputChange(event, menuIndex)}
-            sx={{ mb: 2, height: '40px' }}
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 400,
-                },
-              },
-            }}
-            labelId={`menu-${menuIndex}-type-label`}
-            label={menu.menuType ? '' : 'Choose Menu Type'}
-          >
-            <MenuItem value="BREAKFAST">BREAKFAST</MenuItem>
-            <MenuItem value="LUNCH">LUNCH</MenuItem>
-            <MenuItem value="DINNER">DINNER</MenuItem>
-          </Select>
-        </FormControl>
+    <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={6}>
+                      <TextField
+                        name="name"
+                        label="Menu Name"
+                        value={menu.name}
+                        onChange={(event) => handleMenuInputChange(event, menuIndex)}
+                        required
+                        fullWidth
+                        sx={{ mb: 1 }}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl fullWidth>
+                        <InputLabel id={`menu-${menuIndex}-type-label`}>
+                          {menu.menuType ? '' : 'Choose Menu Type'}
+                        </InputLabel>
+                        <Select
+                          id={`menu-${menuIndex}-type`}
+                          name="menuType"
+                          value={menu.menuType}
+                          onChange={(event) => handleMenuInputChange(event, menuIndex)}
+                          sx={{ mb: 2, height: '40px' }}
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 400,
+                              },
+                            },
+                          }}
+                          labelId={`menu-${menuIndex}-type-label`}
+                          label={menu.menuType ? '' : 'Choose Menu Type'}
+                        >
+                          <MenuItem value="BREAKFAST">BREAKFAST</MenuItem>
+                          <MenuItem value="LUNCH">LUNCH</MenuItem>
+                          <MenuItem value="DINNER">DINNER</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
     {menu.items.map((item, itemIndex) => (
       <TextField
         key={itemIndex}
@@ -250,18 +254,16 @@ console.log(payload)
         sx={{ mb: 1 }}
       />
     ))}
-<Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-<Button
-  variant="contained"
-  size="small"
-  onClick={() => handleAddMenuItem(menuIndex)}
-  style={{ fontSize: '12px', padding: '5px 10px' }}
->
-  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-    <span style={{ marginLeft: '5px', color: 'white' }}>Add Item</span>
-  </Box>
-</Button>
-<br/>
+<Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+  <Button
+    variant="contained"
+    size="medium"
+    onClick={() => handleAddMenuItem(menuIndex)}
+    sx={{ fontSize: '14px', padding: '8px 16px', margin:'auto', marginBottom: '20px', display: 'block' }}  >
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <span style={{ marginLeft: '5px', color: 'white' }}>Add Item</span>
+    </Box>
+  </Button>
   <TextField
     name="pricePerServing"
     label="Price Per Serving"
@@ -270,18 +272,20 @@ console.log(payload)
     onChange={(event) => handleMenuInputChange(event, menuIndex)}
     required
     fullWidth
-    sx={{ ml: 2 }}
   />
 </Box>
   </Box>
 ))}
 
-      <Button
-        variant="contained"
-        onClick={() => setFormValues({ ...formValues, menus: [...formValues.menus, { items: [] }] })}
-      >
-       <span style={{ marginLeft: '5px', color: 'white' }}> Add Menu</span>
-      </Button>
+<Button
+  variant="contained"
+  size="medium"
+  onClick={() => setFormValues({ ...formValues, menus: [...formValues.menus, { items: [] }] })}
+  sx={{ fontSize: '14px', padding: '8px 16px', margin: 'auto', display: 'block' }}
+>
+  <span style={{ marginLeft: '5px', color: 'white' }}>Add Menu</span>
+</Button>
+
     </Box>
   </AccordionDetails>
 </Accordion>
@@ -295,55 +299,61 @@ console.log(payload)
   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
     {/* ... */}
     <FormControlLabel
-      control={
-        <Checkbox
-          name="vegetarian"
-          checked={formValues.specialSpecifications.vegetarian}
-          onChange={handleCheckboxChange}
-        />
-      }
-      label="Vegetarian"
+  control={
+    <Checkbox
+      name="vegetarian"
+      checked={formValues.specialSpecifications.vegetarian}
+      onChange={handleCheckboxChange}
+      value="VEGETARIAN"
     />
-    <FormControlLabel
-      control={
-        <Checkbox
-          name="vegan"
-          checked={formValues.specialSpecifications.vegan}
-          onChange={handleCheckboxChange}
-        />
-      }
-      label="Vegan"
+  }
+  label="Vegetarian"
+/>
+<FormControlLabel
+  control={
+    <Checkbox
+      name="vegan"
+      checked={formValues.specialSpecifications.vegan}
+      onChange={handleCheckboxChange}
+      value="VEGAN"
     />
-    <FormControlLabel
-      control={
-        <Checkbox
-          name="glutenFree"
-          checked={formValues.specialSpecifications.glutenFree}
-          onChange={handleCheckboxChange}
-        />
-      }
-      label="Gluten Free"
+  }
+  label="Vegan"
+/>
+<FormControlLabel
+  control={
+    <Checkbox
+      name="gluten_Free"
+      checked={formValues.specialSpecifications.glutenFree}
+      onChange={handleCheckboxChange}
+      value="GLUTEN_FREE"
     />
-    <FormControlLabel
-      control={
-        <Checkbox
-          name="lactoseFree"
-          checked={formValues.specialSpecifications.lactoseFree}
-          onChange={handleCheckboxChange}
-        />
-      }
-      label="Lactose Free"
+  }
+  label="Gluten Free"
+/>
+<FormControlLabel
+  control={
+    <Checkbox
+      name="lactose_Free"
+      checked={formValues.specialSpecifications.lactoseFree}
+      onChange={handleCheckboxChange}
+      value="LACTOSE_FREE"
     />
-    <FormControlLabel
-      control={
-        <Checkbox
-          name="halal"
-          checked={formValues.specialSpecifications.halal}
-          onChange={handleCheckboxChange}
-        />
-      }
-      label="Halal"
+  }
+  label="Lactose Free"
+/>
+<FormControlLabel
+  control={
+    <Checkbox
+      name="halal"
+      checked={formValues.specialSpecifications.halal}
+      onChange={handleCheckboxChange}
+      value="HALAL"
     />
+  }
+  label="Halal"
+/>
+
   </Box>
 </AccordionDetails>
         </Accordion>
