@@ -111,7 +111,7 @@ function data(role) {
       // { Header: "employed", accessor: "employed", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],
-    rows: data.map(item => {
+    rows: [...data.map(item => {
       return {
         User: <Author id={item.id} name={item.firstname + " " +item.lastname} email={item.email} />,
         function: <Job title={item.role} description={item.description} />,
@@ -134,7 +134,15 @@ function data(role) {
           </MDTypography>
         ),
       };
-    })
+    }),
+    {action: (
+      <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+        <IconButton variant="contained" color="secondary">
+            <Icon fontSize="large">add</Icon>
+        </IconButton>
+      </MDTypography>
+    )}
+  ]
   };;
 }
 
