@@ -14,7 +14,9 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import FreeBreakfastIcon from '@mui/icons-material/FreeBreakfast';
 import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
-
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CardActions from '@mui/material/CardActions';
 function CateringCompanyCard({
   companyName,
   contactInformation,
@@ -22,6 +24,7 @@ function CateringCompanyCard({
   delivery,
   specialSpecifications,
   capacity,
+  onDelete,
 }) {
   const renderMenus = menus.map((menu, index) => {
     let menuTypeIcon = null;
@@ -139,6 +142,11 @@ function CateringCompanyCard({
           {renderMenus}
         </ImageList>
       </MDBox>
+      <CardActions>
+        <IconButton onClick={onDelete} color="error">
+          <DeleteIcon />
+        </IconButton>
+      </CardActions>
     </Card>
   );
 }
