@@ -126,7 +126,7 @@ function AddCateringCompanyForm() {
           // Reset the form values
           setFormValues(initialFormValues);
           // Trigger any additional actions or notifications upon successful form submission
-          onFormSubmit();
+          // onFormSubmit();
         } else {
           throw new Error('Request failed');
         }
