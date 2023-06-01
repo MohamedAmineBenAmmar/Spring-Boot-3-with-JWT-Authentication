@@ -58,7 +58,7 @@ function ManageUser(props) {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Stewards et hotesses
+                  Table d'utilisateur
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
