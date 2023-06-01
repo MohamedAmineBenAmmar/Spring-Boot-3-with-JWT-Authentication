@@ -8,7 +8,7 @@ import { Link,useNavigate } from 'react-router-dom';
 
 const CateringCompanyMainPage = () => {
   const [cateringCompanies, setCateringCompanies] = useState([]);
-    const navigation = useNavigate
+    const navigation = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
