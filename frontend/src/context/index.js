@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import input from "assets/theme/components/form/input";
 
 // Material Dashboard 2 React main context
 const MaterialUI = createContext();
@@ -89,7 +90,12 @@ function MaterialUIControllerProvider({ children }) {
           navigate('/authentication/sign-in');
         } else {
           // Token is valid
-          navigate('/dashboard');
+          let lastLocation = localStorage.getItem("lastLocation");
+          if (lastLocation) {
+            navigate(lastLocation);
+          } else {
+            navigate('/dashboard');
+          }         
         }
       } catch (err) {
         setToken(null);
@@ -99,6 +105,12 @@ function MaterialUIControllerProvider({ children }) {
     } else {
       // Token is not present in the localstorage
       navigate('/authentication/sign-in');
+    }
+
+    return () => {
+      // Cleanup
+      console.log("clean up")
+      input('test')
     }
   }, [])
 
