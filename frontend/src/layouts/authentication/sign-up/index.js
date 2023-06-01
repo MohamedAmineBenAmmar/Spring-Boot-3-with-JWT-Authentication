@@ -1,5 +1,5 @@
 // react-router-dom components
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -122,14 +122,14 @@ function Cover() {
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
-                Already have an account?{" "}
+                Already have an account?{" "}                
                 <MDTypography
+                  component={Link}
+                  to="/authentication/sign-in"
                   variant="button"
                   color="info"
                   fontWeight="medium"
-                  textGradient
-                  style={{ cursor: "pointer" }}
-                  onClick={handleRedirection}
+                  textGradient                
                 >
                   Sign In
                 </MDTypography>

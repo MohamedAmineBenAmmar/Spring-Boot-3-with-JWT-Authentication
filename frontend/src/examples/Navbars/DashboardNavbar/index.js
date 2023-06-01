@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -45,6 +30,7 @@ import {
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
 
+
 // Material Dashboard 2 React context
 import {
   useMaterialUIController,
@@ -55,10 +41,13 @@ import {
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
-  const [controller, dispatch] = useMaterialUIController();
+  const [controller, dispatch, token, setToken] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     // Setting the navbar type
@@ -123,6 +112,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
     },
   });
 
+  const handleLogout = () => {    
+    setToken(null);
+    localStorage.removeItem('token');
+    navigate("/authentication/sign-in");
+  };
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -177,6 +172,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>
               {renderMenu()}
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleLogout}
+              >
+                <Icon sx={iconsStyle}>logout</Icon>
+              </IconButton>
             </MDBox>
           </MDBox>
         )}
