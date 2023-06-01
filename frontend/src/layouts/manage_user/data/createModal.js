@@ -43,6 +43,10 @@ export default function CreateModal() {
             }),
 
         })
+        .then(result => {
+            console.log('Success:', result);
+            window.location.reload();
+        })
             .catch(error => {
                 console.error('Error:', error);
             });

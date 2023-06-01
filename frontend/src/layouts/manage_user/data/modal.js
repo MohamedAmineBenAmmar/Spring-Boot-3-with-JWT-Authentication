@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-    Button, Modal, Fade, TextField, Box, Typography, IconButton,
+    Button, Modal, Fade, TextField, Box, Typography, IconButton, Snackbar,
 } from '@mui/material';
 import Icon from "@mui/material/Icon";
+import Snackbar2 from './snackbar';
 
 export default function EditModal(props) {
-    
+
     const [formState, setFormState] = useState({
         email: props.item.email,
         firstname: props.item.firstname,
@@ -42,13 +43,14 @@ export default function EditModal(props) {
                 "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhc2JhQGdtYWlsLmNvbSIsImlhdCI6MTY4NTY0MzY3MiwiZXhwIjoxNjg3MDgzNjcyfQ.7swr76fPZAlvf-0Pg33HnBpCnetoNRToweNPmD6bBws`
             }),
 
-        }).then(response => response.json())
-        .then(result => {
-          console.log('Success:', result);
         })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+            .then(result => {
+                console.log('Success:', result);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     const [open, setOpen] = useState(false);
