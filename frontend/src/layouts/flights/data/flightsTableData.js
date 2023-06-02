@@ -3,9 +3,17 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 
 import { getFlights } from '../../../services/flightServices'
+import { Icon } from "@mui/material";
+import { setFlight, useMaterialUIController } from 'context';
+import { useNavigate } from 'react-router-dom'
+import { deleteFlight } from '../../../services/flightServices'
 
 export default function FlightData() {
   const [data, setData] = useState([]);
+  const [controller, dispatch, token, setToken] = useMaterialUIController();
+
+ 
+  const navigate = useNavigate();
 
   useEffect(() => {
     getFlights().then((res) => {
@@ -15,6 +23,29 @@ export default function FlightData() {
         console.log("error: ", err);
       });
   }, []);
+
+  const handledelete = (flight) => {   
+    deleteFlight(flight.id).then((res) => {      
+      getFlights().then((res) => {
+        // filter the data array from the deleted element
+        let filteredData = data.filter((element) => (element.id != flight.id))
+        setData(filteredData);
+      })
+        .catch((err) => {
+          console.log("error: ", err);
+        });
+    })
+  }
+
+  const visualize = (flight) => {
+    setFlight(dispatch, flight);
+    navigate('/flights/visualize');
+  }
+
+  const edit = (flight) => {    
+   setFlight(dispatch, flight);
+    navigate('/flights/edit');
+  }
 
   return {
     columns: [
@@ -28,7 +59,7 @@ export default function FlightData() {
       { Header: "Price", accessor: "price", align: "left" },
       { Header: "Pilot", accessor: "pilot", align: "left" },
       { Header: "Co-Pilot", accessor: "coPilot", align: "left" },
-      { Header: "Action", accessor: "action", align: "center" },
+      { Header: "Actions", accessor: "action", align: "center" },
     ],
     rows: data.map((item) => {
       return {
@@ -43,9 +74,11 @@ export default function FlightData() {
         pilot: item.pilot.firstname + " " + item.pilot.lastname,
         coPilot: item.coPilot.firstname + " " + item.coPilot.lastname,
         action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
+          <>
+            <Icon onClick={() => { visualize(item) }} fontSize="small" style={{ marginRight: '5px', cursor: 'pointer' }}>payment</Icon>
+            <Icon onClick={() => { edit(item) }} fontSize="small" style={{ marginRight: '5px', cursor: 'pointer' }}>edit</Icon>
+            <Icon onClick={() => { handledelete(item) }} fontSize="small" style={{ marginRight: '5px', color: "red", cursor: 'pointer' }}>delete</Icon>
+          </>
         ),
       };
     }),

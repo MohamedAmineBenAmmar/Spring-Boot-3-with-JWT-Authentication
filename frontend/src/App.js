@@ -40,11 +40,13 @@ import brandDark from "assets/images/logo-ct-dark.png";
 
 import TestComponent from "layouts/catering_company/test";
 import FlightCreate from "layouts/flights/flightCreate";
+import FlightUpdate from "layouts/flights/flightUpdate";
+import VisualizeFlight from "layouts/flights/VisualizeFlight";
 
 export default function App() {
 
 
-  const [controller, dispatch] = useMaterialUIController();
+  const [controller, dispatch, token] = useMaterialUIController();
   const {
     miniSidenav,
     direction,
@@ -137,14 +139,17 @@ export default function App() {
   );
 
   
-  useEffect(() => {
-    console.log("the current location that the uer hit")
-    console.log(pathname)
+  useEffect(() => {    
     if(pathname.length > 1) {
       localStorage.setItem("lastLocation", pathname);
     }
   }, [pathname])
 
+
+  if(!token && pathname !== "/authentication/sign-up" && pathname !== "/authentication/sign-in") {
+    return <Navigate to="/authentication/sign-in" />
+  }
+  
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -168,6 +173,8 @@ export default function App() {
           {getRoutes(routes)}
           <Route exact path="/catering-form" element={<TestComponent/>} />
           <Route exact path="/flights/create" element={<FlightCreate/>} />
+          <Route exact path="/flights/edit" element={<FlightUpdate/>} />
+          <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
@@ -194,6 +201,8 @@ export default function App() {
         {getRoutes(routes)}
         <Route exact path="/catering-form" element={<TestComponent/>} />
         <Route exact path="/flights/create" element={<FlightCreate/>} />
+        <Route exact path="/flights/edit" element={<FlightUpdate/>} />
+        <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>

@@ -48,6 +48,9 @@ function reducer(state, action) {
     case 'SET_TOKEN': {
       return { ...state, token: action.value };
     }
+    case 'SET_FLIGHT': {
+      return { ...state, flight: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -68,13 +71,14 @@ function MaterialUIControllerProvider({ children }) {
     layout: "dashboard",
     darkMode: false,
     token: null, // Add token as part of the initial state
+    flight: null,
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
   const [token, setToken] = useState(localStorage.getItem("token")); // Add token state
-  
+  const [flight, setFlight] = useState(null); // Add flight state
 
-  const value = useMemo(() => [controller, dispatch, token, setToken], [controller, dispatch, token, setToken]);
+  const value = useMemo(() => [controller, dispatch, token, setToken, flight, setFlight], [controller, dispatch, token, setToken, flight, setFlight]);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -105,12 +109,6 @@ function MaterialUIControllerProvider({ children }) {
     } else {
       // Token is not present in the localstorage
       navigate('/authentication/sign-in');
-    }
-
-    return () => {
-      // Cleanup
-      console.log("clean up")
-      input('test')
     }
   }, [])
 
@@ -147,6 +145,7 @@ const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value })
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 const setToken = (dispatch, value) => dispatch({ type: 'SET_TOKEN', value });
+const setFlight = (dispatch, value) => dispatch({ type: 'SET_FLIGHT', value });
 
 export {
   MaterialUIControllerProvider,
@@ -162,4 +161,5 @@ export {
   setLayout,
   setDarkMode,
   setToken,
+  setFlight
 };
