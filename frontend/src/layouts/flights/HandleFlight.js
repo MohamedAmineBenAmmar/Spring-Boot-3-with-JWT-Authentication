@@ -6,6 +6,9 @@ import MuiAlert from '@mui/material/Alert';
 
 import { getAllCateringCompanies } from '../../services/cateringCompaniesServices'
 import { getAllCoPilots, getAllPilots, getAllFlightCrew } from '../../services/crew'
+import { createFlight } from '../../services/flightServices'
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
 const initialFormValues = {
     flightNumber: '',
@@ -22,10 +25,8 @@ const initialFormValues = {
     flightCrew: [], // "flightCrew": [{"id": 1}, ...],
 };
 
-let stringInputs = ["flightNumber", "airline", "departureAirport", "arrivalAirport", "departureTime", "arrivalTime", "seatsAvailable", "price", "pilot", "coPilot"];
-let arrayOfIdObjects = ["menus", "flightCrew"]
 
-function HandleFlight() {
+function HandleFlight({ operation }) {
     const [formValues, setFormValues] = useState(initialFormValues);
     const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
     const [cateringCompanies, setCateringCompanies] = useState([]); // "cateringCompanies": [{"id": 1}, ...],
@@ -58,9 +59,9 @@ function HandleFlight() {
                 const flightCrewPromiseResult = results[2];
 
                 // Do something with the results
-                console.log(pilotsPromiseResult);
-                console.log(coPilotsPromiseResult);
-                console.log(flightCrewPromiseResult);
+                // console.log(pilotsPromiseResult);
+                // console.log(coPilotsPromiseResult);
+                // console.log(flightCrewPromiseResult);
 
                 setPilots(pilotsPromiseResult);
                 setCoPilots(coPilotsPromiseResult);
@@ -77,51 +78,68 @@ function HandleFlight() {
 
     // To change
     const handleFormChange = (e) => {
-        if (stringInputs.findIndex(e.target.id) != -1) {
-            setFormValues({ ...formValues, [e.target.id]: e.target.value })
-        }
-
-        if (arrayOfIdObjects.findIndex(e.target.id) != -1) {
-            let tmpArray = [...formValues[e.target.id]]
-            let flag = false;
-            for (let i = 0; i < tmpArray.length; i++) {
-                if (tmpArray[i]["id"] === e.target.value) {
-                    flag = true;
-                    break;
-                }
-            }
-
-            if (flag) {
-                // If the value existed remove form the array
-                let filtredArray = tmpArray.filter((item) => item.id !== e.target.value)
-                setFormValues({ ...formValues, [e.target.id]: filtredArray })
-            } else {
-                // If the value dosent exist added to the array and set the new value
-                let newArray = [...formValues[e.target.id], { id: e.target.value }]
-                setFormValues({ ...formValues, [e.target.id]: newArray })
-            }
-
-        }
-
+        setFormValues({ ...formValues, [e.target.id]: e.target.value })
     }
-
-    const handleCheckboxChange = (event) => {
-        const { id, checked } = event.target;
-        // setFormValues((prevValues) => ({
-        //     ...prevValues,
-        //     specialSpecifications: {
-        //         ...prevValues.specialSpecifications,
-        //         [name]: checked,
-        //     },
-        // }));
-    };
 
     const handleSnackbarClose = () => {
         setNotification({ ...notification, open: false });
     };
 
+    const buildRequestBody = () => {
+        let extractedMenus = []
+        for (let i = 0; i < selectedCateringCompanies.length; i++) {
+            for (let j = 0; j < selectedCateringCompanies[i].menus.length; j++) {
+                if (selectedCateringCompanies[i].menus[j].selected) {
+                    extractedMenus.push({ id: selectedCateringCompanies[i].menus[j].id })
+                }
+            }
+        }
+
+        let extractedFlightCrewIds = []
+        for (let i = 0; i < formValues.flightCrew.length; i++) {
+            extractedFlightCrewIds.push({ id: formValues.flightCrew[i].id })
+        }
+
+        let reqBody = {
+            flightNumber: formValues.flightNumber,
+            airline: formValues.airline,
+            departureAirport: formValues.departureAirport,
+            arrivalAirport: formValues.arrivalAirport,
+            departureTime: formValues.departureTime,
+            arrivalTime: formValues.arrivalTime,
+            seatsAvailable: formValues.seatsAvailable,
+            price: formValues.price,
+            menus: [...extractedMenus],
+            pilot: {
+                id: formValues.pilot.id
+            },
+            coPilot: {
+                id: formValues.coPilot.id
+            },
+            flight_crew: [...extractedFlightCrewIds]
+        }
+
+        return reqBody
+    }
+
     const handleFormSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        console.log("formValues")
+        console.log(formValues)
+
+        if (operation === 'CREATE') {
+            let createFlightReqBody = buildRequestBody()
+            // console.log("createFlightReqBody")
+            // console.log(createFlightReqBody)
+
+            createFlight(createFlightReqBody)
+                .then(res => {                    
+                    setNotification({ open: true, message: 'Flight created successfully', severity: 'success' })
+                })
+                .catch(err => {                    
+                    // setNotification({ open: true, message: 'Error occured', severity: 'error' })
+                })
+        }
     }
 
     // Verify if the catering companie is slected for this flight
@@ -144,8 +162,6 @@ function HandleFlight() {
         } else {
             setSelectedCateringCompanies([...selectedCateringCompanies, cateringCompany])
         }
-
-
     }
 
     const displayCateringCompanies = cateringCompanies.map((cateringCompany, index) => (
@@ -264,207 +280,211 @@ function HandleFlight() {
     ))
 
     return (
-        <Container maxWidth="sm">
-            <Snackbar open={notification.open} autoHideDuration={3000} onClose={() => setNotification({ ...notification, open: false })}>
-                <MuiAlert onClose={() => setNotification({ ...notification, open: false })} severity={notification.severity} elevation={6} variant="filled">
-                    {notification.message}
-                </MuiAlert>
-            </Snackbar>
-            <Box mt={4} mb={2}>
-                <Typography variant="h4" align="center">
-                    Create Flight
-                </Typography>
-            </Box>
-            <form onSubmit={handleFormSubmit}>
-                {/* Company Information */}
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Information</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            <TextField
-                                id="flightNumber"
-                                name="flightNumber"
-                                label="Flight Number"
-                                value={formValues.flightNumber}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                            <TextField
-                                id="airline"
-                                name="airline"
-                                label="Airline"
-                                value={formValues.airline}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                            <TextField
-                                id="departureAirport"
-                                name="departureAirport"
-                                label="Departure Airport"
-                                value={formValues.departureAirport}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                            <TextField
-                                id="arrivalAirport"
-                                name="arrivalAirport"
-                                label="Arrival Airport"
-                                value={formValues.arrivalAirport}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
+        <DashboardLayout>
+            <DashboardNavbar />
+            <Container maxWidth="sm">
+                <Snackbar open={notification.open} autoHideDuration={3000} onClose={() => setNotification({ ...notification, open: false })}>
+                    <MuiAlert onClose={() => setNotification({ ...notification, open: false })} severity={notification.severity} elevation={6} variant="filled">
+                        {notification.message}
+                    </MuiAlert>
+                </Snackbar>
+                <Box mt={4} mb={2}>
+                    <Typography variant="h4" align="center">
+                        Create Flight
+                    </Typography>
+                </Box>
+                <form onSubmit={handleFormSubmit}>
+                    {/* Company Information */}
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Information</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                <TextField
+                                    id="flightNumber"
+                                    name="flightNumber"
+                                    label="Flight Number"
+                                    value={formValues.flightNumber}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                                <TextField
+                                    id="airline"
+                                    name="airline"
+                                    label="Airline"
+                                    value={formValues.airline}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                                <TextField
+                                    id="departureAirport"
+                                    name="departureAirport"
+                                    label="Departure Airport"
+                                    value={formValues.departureAirport}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                                <TextField
+                                    id="arrivalAirport"
+                                    name="arrivalAirport"
+                                    label="Arrival Airport"
+                                    value={formValues.arrivalAirport}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
 
-                {/* Menus */}
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Time</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            <TextField
-                                id="departureTime"
-                                name="departureTime"
-                                label="Departure Time"
-                                type="datetime-local"
-                                required
-                                value={formValues.departureTime}
-                                onChange={handleFormChange}
-                                fullWidth
-                                InputLabelProps={{ shrink: true }} // Add this line
-                                sx={{ mb: 2 }}
-                            />
-                            <TextField
-                                id="arrivalTime"
-                                name="arrivalTime"
-                                label="Arrival Time"
-                                type="datetime-local"
-                                required
-                                value={formValues.arrivalTime}
-                                onChange={handleFormChange}
-                                fullWidth
-                                InputLabelProps={{ shrink: true }} // Add this line
-                                sx={{ mb: 2 }}
-                            />
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
+                    {/* Menus */}
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Time</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                <TextField
+                                    id="departureTime"
+                                    name="departureTime"
+                                    label="Departure Time"
+                                    type="datetime-local"
+                                    required
+                                    value={formValues.departureTime}
+                                    onChange={handleFormChange}
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }} // Add this line
+                                    sx={{ mb: 2 }}
+                                />
+                                <TextField
+                                    id="arrivalTime"
+                                    name="arrivalTime"
+                                    label="Arrival Time"
+                                    type="datetime-local"
+                                    required
+                                    value={formValues.arrivalTime}
+                                    onChange={handleFormChange}
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }} // Add this line
+                                    sx={{ mb: 2 }}
+                                />
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
 
-                {/* Special Specifications */}
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Configuration</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            {/* ... */}
-                            <TextField
-                                id="seatsAvailable"
-                                name="seatsAvailable"
-                                label="Seats availbalbe"
-                                value={formValues.seatsAvailable}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                            <TextField
-                                id="price"
-                                name="price"
-                                label="Price"
-                                value={formValues.price}
-                                onChange={handleFormChange}
-                                required
-                                fullWidth
-                                sx={{ mb: 2 }}
-                            />
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Catering Company Assignement</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            {/* Lopping throught all the catering companies to allow the user to select the catering companies desired */}
-                            {displayCateringCompanies}
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Menus</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            {/* Displaying menus */}
-                            {displayMenus}
+                    {/* Special Specifications */}
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Configuration</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                {/* ... */}
+                                <TextField
+                                    id="seatsAvailable"
+                                    name="seatsAvailable"
+                                    label="Seats availbalbe"
+                                    value={formValues.seatsAvailable}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                                <TextField
+                                    id="price"
+                                    name="price"
+                                    label="Price"
+                                    value={formValues.price}
+                                    onChange={handleFormChange}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 2 }}
+                                />
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Catering Company Assignement</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                {/* Lopping throught all the catering companies to allow the user to select the catering companies desired */}
+                                {displayCateringCompanies}
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Menus</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                {/* Displaying menus */}
+                                {displayMenus}
 
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Flight Crew Assignement</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                            {/* ... */}
-                            <FormControl>
-                                <FormLabel id="pilot-radio-buttons-group-label">Pilot</FormLabel>
-                                <RadioGroup
-                                    aria-labelledby="pilot-radio-buttons-group-label"
-                                    name="pilot"
-                                    onClick={handlePilotSelection}
-                                >
-                                    {displayPilots}
-                                </RadioGroup>
-                            </FormControl>
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography>Flight Crew Assignement</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                {/* ... */}
+                                <FormControl>
+                                    <FormLabel id="pilot-radio-buttons-group-label">Pilot</FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="pilot-radio-buttons-group-label"
+                                        name="pilot"
+                                        onClick={handlePilotSelection}
+                                    >
+                                        {displayPilots}
+                                    </RadioGroup>
+                                </FormControl>
 
-                            <FormControl>
-                                <FormLabel id="pilot-radio-buttons-group-label">CoPilot</FormLabel>
-                                <RadioGroup
-                                    aria-labelledby="copilot-radio-buttons-group-label"
-                                    name="coPilot"
-                                    onClick={handleCopiloteSelection}
-                                >
-                                    {displayCoPilots}
-                                </RadioGroup>
-                            </FormControl>
+                                <FormControl>
+                                    <FormLabel id="pilot-radio-buttons-group-label">CoPilot</FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="copilot-radio-buttons-group-label"
+                                        name="coPilot"
+                                        onClick={handleCopiloteSelection}
+                                    >
+                                        {displayCoPilots}
+                                    </RadioGroup>
+                                </FormControl>
 
-                            <FormControl>
-                                <FormLabel id="flight-crew-radio-buttons-group-label">Flight Crew Selection</FormLabel>
-                                {displayCrewMembers}
-                            </FormControl>
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
+                                <FormControl>
+                                    <FormLabel id="flight-crew-radio-buttons-group-label">Flight Crew Selection</FormLabel>
+                                    {displayCrewMembers}
+                                </FormControl>
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
 
 
-                {/* Submit Button */}
-                <Button variant="contained" type="submit" sx={{ fontSize: '14px', padding: '8px 16px', margin: 'auto', display: 'block', marginTop: '10px' }}>
-                    <span style={{ marginLeft: 'auto', color: 'white', marginRight: 'auto' }}>Submit</span>
-                </Button>
-            </form>
-            <Snackbar open={notification.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <MuiAlert onClose={handleSnackbarClose} severity={notification.severity} elevation={6} variant="filled">
-                    {notification.message}
-                </MuiAlert>
-            </Snackbar>
-        </Container>
+                    {/* Submit Button */}
+                    <Button variant="contained" type="submit" sx={{ fontSize: '14px', padding: '8px 16px', margin: 'auto', display: 'block', marginTop: '10px' }} onClick={handleFormSubmit}>
+                        <span style={{ marginLeft: 'auto', color: 'white', marginRight: 'auto' }}>Submit</span>
+                    </Button>
+                </form>
+                <Snackbar open={notification.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                    <MuiAlert onClose={handleSnackbarClose} severity={notification.severity} elevation={6} variant="filled">
+                        {notification.message}
+                    </MuiAlert>
+                </Snackbar>
+            </Container>
+        </DashboardLayout>
+
     );
 }
 
