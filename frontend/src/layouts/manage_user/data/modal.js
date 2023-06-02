@@ -1,48 +1,57 @@
 import React, { useState } from 'react';
 import {
-    Button, Modal, Fade, TextField, Box, Typography, IconButton,
+    Button, Modal, Fade, TextField, Box, Typography, IconButton, Snackbar,
 } from '@mui/material';
 import Icon from "@mui/material/Icon";
+import Snackbar2 from './snackbar';
 
 export default function EditModal(props) {
-    const [formState, setFormState] = useState({
-        email: '',
-        firstname: '',
-        lastname: '',
-        role: '',
-      })
 
-      const handleFormChange = (event) => {
+    const [formState, setFormState] = useState({
+        email: props.item.email,
+        firstname: props.item.firstname,
+        lastname: props.item.lastname,
+        role: props.item.role,
+    })
+
+    const handleFormChange = (event) => {
         const value = event.target.value;
         const name = event.target.name;
         setFormState(prevState => ({
-          ...prevState,
-          [name]: value,
+            ...prevState,
+            [name]: value,
         }));
-      };
-    
-      const handleSubmit = (event) => {
+    };
+
+    const handleSubmit = (event) => {
         event.preventDefault();
         const { email, firstname, lastname, role } = formState;
         // TODO make validation of empty fields
         const formData = {
-          email,
-          firstname, 
-          lastname, 
-          role
+            email,
+            firstname,
+            lastname,
+            role
         };
+        const myjson = JSON.stringify(formData)
+        console.log(myjson)
         fetch('http://localhost:8080/api/user/' + props.item.id, {
-          method: 'PUT',
-          body: formData
+            method: 'PUT',
+            body: myjson,
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ` + localStorage.getItem('token'),
+            }),
+
         })
-        .then(response => response.json())
-        .then(result => {
-          console.log('Success:', result);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      }
+            .then(result => {
+                console.log('Success:', result);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -56,8 +65,8 @@ export default function EditModal(props) {
 
     return (
         <div>
-            <IconButton variant="contained" color="warning" onClick={handleOpen}>
-                <Icon fontSize="medium">edit</Icon>
+            <IconButton variant="contained" color="secondary" onClick={handleOpen}>
+                <Icon fontSize="small">edit</Icon>
             </IconButton>
             <Modal
                 open={open}
@@ -70,7 +79,7 @@ export default function EditModal(props) {
             >
                 <Fade in={open}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-                        <Box sx={{ p: 4, backgroundColor: '#f0f0f0'}}>
+                        <Box sx={{ p: 4, backgroundColor: '#f0f0f0' }}>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -79,9 +88,9 @@ export default function EditModal(props) {
                                     mb: 2,
                                 }}
                             >
-                                <Typography variant="h4">Form Title</Typography>
+                                <Typography variant="h4">Edit User</Typography>
                                 <IconButton onClick={handleClose}>
-                                    <Icon fontSize="small">logout</Icon>
+                                    <Icon fontSize="small">close</Icon>
                                 </IconButton>
                             </Box>
                             <form onSubmit={handleSubmit}>
@@ -93,21 +102,21 @@ export default function EditModal(props) {
                                     margin="normal"
                                     placeholder={props.item.firstname}
                                     value={formState.firstname}
-        onChange={handleFormChange}
-                                    
+                                    onChange={handleFormChange}
+
                                 />
                                 <TextField
-                                name='lastname'
+                                    name='lastname'
                                     label="Last name"
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
                                     placeholder={props.item.lastname}
                                     value={formState.lastname}
-        onChange={handleFormChange}
+                                    onChange={handleFormChange}
                                 />
                                 <TextField
-                                name='email'
+                                    name='email'
                                     label="Email"
                                     variant="outlined"
                                     type='Email'
@@ -115,19 +124,19 @@ export default function EditModal(props) {
                                     margin="normal"
                                     placeholder={props.item.email}
                                     value={formState.email}
-        onChange={handleFormChange}
+                                    onChange={handleFormChange}
                                 />
                                 <TextField
-                                name='role'
+                                    name='role'
                                     label="Role"
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
                                     placeholder={props.item.role}
                                     value={formState.role}
-        onChange={handleFormChange}
+                                    onChange={handleFormChange}
                                 />
-                                <Button variant="contained" color="primary" type="submit" onClick={handleClose}>
+                                <Button variant="contained" color="primary" type="submit" onClick={handleClose} style={{ color: 'white' }}>
                                     Submit
                                 </Button>
                             </form>

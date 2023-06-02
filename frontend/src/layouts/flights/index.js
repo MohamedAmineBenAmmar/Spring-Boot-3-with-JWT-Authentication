@@ -48,6 +48,7 @@ function ManageFlights() {
                 <Fab
                   color="primary"
                   aria-label="add"
+                  size="big"
                   sx={{
                     position: "absolute",
                     top: -16,

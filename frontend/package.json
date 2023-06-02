@@ -38,7 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:old": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts start",
+    "start_old": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts start",
     "build": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

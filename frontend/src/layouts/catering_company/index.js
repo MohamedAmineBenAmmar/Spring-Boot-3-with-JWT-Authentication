@@ -16,9 +16,8 @@ const CateringCompanyMainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hQGdtYWlsLmNvbSIsImlhdCI6MTY4NTQ1NDI0NCwiZXhwIjoxNjg2ODk0MjQ0fQ.Tm2QVPcihYhgGzDeOWXh_SdfHmActXnFzDo970a6E6k';
         const header = {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ` + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         };
 
@@ -35,9 +34,8 @@ const CateringCompanyMainPage = () => {
   }, []);
   const handleDelete = async (companyId) => {
     try {
-      const token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hQGdtYWlsLmNvbSIsImlhdCI6MTY4NTQ1NDI0NCwiZXhwIjoxNjg2ODk0MjQ0fQ.Tm2QVPcihYhgGzDeOWXh_SdfHmActXnFzDo970a6E6k';
       const header = {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ` + localStorage.getItem('token'),
         'Content-Type': 'application/json'
       };
 

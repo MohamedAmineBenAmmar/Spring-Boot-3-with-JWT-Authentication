@@ -91,6 +91,7 @@ function HandleFlight({ operation, flightToUpadte }) {
         setNotification({ ...notification, open: false });
     };
 
+
     const buildRequestBody = () => {
         let extractedMenus = []
         for (let i = 0; i < selectedCateringCompanies.length; i++) {
@@ -101,10 +102,12 @@ function HandleFlight({ operation, flightToUpadte }) {
             }
         }
 
+
         let extractedFlightCrewIds = []
         for (let i = 0; i < formValues.flightCrew.length; i++) {
             extractedFlightCrewIds.push({ id: formValues.flightCrew[i].id })
         }
+
 
         let reqBody = {
             flightNumber: formValues.flightNumber,

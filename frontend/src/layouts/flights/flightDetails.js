@@ -42,6 +42,7 @@ export default function FlightDetail({ flightId }) {
   const [flight, setFlight] = useState(null);
 
   useEffect(() => {
+
     if(flightId != null){      
       getFlightById(flightId).then((res) => {
         setFlight(res);
@@ -50,6 +51,9 @@ export default function FlightDetail({ flightId }) {
           console.log("error: ", err);
         });
     }
+
+  
+
   }, [flightId]);
 
   if (!flight) {
