@@ -46,7 +46,7 @@ import VisualizeFlight from "layouts/flights/VisualizeFlight";
 export default function App() {
 
 
-  const [controller, dispatch] = useMaterialUIController();
+  const [controller, dispatch, token] = useMaterialUIController();
   const {
     miniSidenav,
     direction,
@@ -139,14 +139,17 @@ export default function App() {
   );
 
   
-  useEffect(() => {
-    console.log("the current location that the uer hit")
-    console.log(pathname)
+  useEffect(() => {    
     if(pathname.length > 1) {
       localStorage.setItem("lastLocation", pathname);
     }
   }, [pathname])
 
+
+  if(!token && pathname !== "/authentication/sign-up" && pathname !== "/authentication/sign-in") {
+    return <Navigate to="/authentication/sign-in" />
+  }
+  
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
