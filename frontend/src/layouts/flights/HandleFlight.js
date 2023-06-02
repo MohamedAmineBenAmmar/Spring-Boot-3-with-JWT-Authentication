@@ -27,7 +27,7 @@ import {
   getAllPilots,
   getAllFlightCrew,
 } from "../../services/crew";
-import { createFlight, updateFlight } from "../../services/flightServices";
+import { createFlight, updateFlight, createFlightAnalysis } from "../../services/flightServices";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
@@ -60,6 +60,16 @@ function HandleFlight({ operation, flightToUpadte }) {
   const [pilots, setPilots] = useState([]);
   const [coPilots, setCoPilots] = useState([]);
   const [flightCrew, setFlightCrew] = useState([]);
+
+  const [analysis, setAnalysis] = useState({})
+
+  const handleAnalysis = (e) => {
+    setAnalysis({ ...analysis, [e.target.id]: e.target.value });
+  }
+
+  const handleAnalysisDistance = (e) => {
+    setAnalysis({ ...analysis, [e.target.name]: e.target.value });
+  }
 
   useEffect(() => {
     getAllCateringCompanies()
@@ -169,6 +179,37 @@ function HandleFlight({ operation, flightToUpadte }) {
             message: "Flight created successfully",
             severity: "success",
           });
+
+          // Preapre the req for the ai service
+          console.log("The flight number")
+          let flightAnalysis = {
+            flight_number: res.flightNumber,
+            id: res.id,
+            departure_delay: analysis.departureDelay,
+            day_of_week: analysis.dayOfWeek,
+            day_of_month: analysis.dayOfMonth,
+            distance: analysis.distance,
+          }
+
+          // Convert each field of the object to integers
+          for (let key in flightAnalysis) {
+            flightAnalysis[key] = parseInt(flightAnalysis[key]);
+          }
+
+          createFlightAnalysis(flightAnalysis)
+          .then((res) => {
+            console.log("res")
+            console.log(res)
+            setNotification({
+              open: true,
+              message: "Flight analysis successfully added",
+              severity: "success",
+            });
+          })
+          .catch((err) => {
+            console.log("err")
+            console.log(err)
+          })
         })
         .catch((err) => {
           // setNotification({ open: true, message: 'Error occured', severity: 'error' })
@@ -589,6 +630,71 @@ function HandleFlight({ operation, flightToUpadte }) {
               </Box>
             </AccordionDetails>
           </Accordion>
+         {operation === "CREATE" && (           
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Artificial Intelligence Integration</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box
+                sx={{ display: "flex", flexDirection: "row", width: "100%" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "50%",
+                    mr: 2,
+                  }}
+                >
+                  <TextField
+                    id="departureDelay"
+                    name="departureDelay"
+                    label="Departure Delay (in minutes)"
+                    value={analysis.departureDelay}
+                    onChange={handleAnalysis}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="dayOfWeek"
+                    name="dayOfWeek"
+                    label="Day of the Week (0-6)"
+                    value={analysis.dayOfWeek}
+                    onChange={handleAnalysis}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="dayOfMonth"
+                    name="dayOfMonth"
+                    label="Day of the Month (1-31)"
+                    required
+                    value={analysis.dayOfMonth}
+                    onChange={handleAnalysis}
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />                  
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">Distance</FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue="female"
+                      name="distance"
+                      onChange={handleAnalysisDistance}
+                    >
+                      <FormControlLabel value={1} control={<Radio />} label="Short" />
+                      <FormControlLabel value={2} control={<Radio />} label="Medium" />
+                      <FormControlLabel value={3} control={<Radio />} label="Long" />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+         )}
 
           {/* Submit Button */}
           <Button

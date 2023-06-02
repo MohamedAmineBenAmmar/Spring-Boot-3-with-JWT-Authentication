@@ -1,6 +1,7 @@
 from database.config import db
 from ...analysis.models.analysis_model import Analysis
 from ...analysis.controllers.analysis_controller import analysis_controller
+import numpy as np
 
 import pandas as pd
 import joblib
@@ -25,23 +26,14 @@ class PredictionController():
         
         tmp_dict = {
             "DayofMonth": [flight_analysis_dict['day_of_month']],
+            "DayOfWeek": [flight_analysis_dict['day_of_week']], 
             "DepDelay": [flight_analysis_dict['departure_delay']],
-            "FlightNum": [flight_analysis_dict['flight_number']],
-            "Distance": [flight_analysis_dict['distance']],
-            "DayOfWeek": [flight_analysis_dict['day_of_week']]            
+            "Distance": [flight_analysis_dict['distance']],                    
         }
-        
-        new_data = pd.DataFrame.from_dict(tmp_dict)
-        print("the fucking df")
-        print(new_data)
-        print()
-        # Make predictions on the new data
-        predictions = model.predict(new_data.values)
+        new_data_array = np.array([value[0] for value in tmp_dict.values()])        
 
-        # Print the predictions
-        print("moselm zabour")
-        print(predictions)
-        
+        predictions = model.predict(new_data_array.reshape(1,-1))
+
         return {
             "delay": predictions[0]
         }
