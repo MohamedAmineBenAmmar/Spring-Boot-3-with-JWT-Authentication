@@ -1,4 +1,4 @@
-import { GET_FLIGHTS, CREATE_FLIGHT } from './URL'
+import { GET_FLIGHTS, CREATE_FLIGHT, UPDATE_FLIGHT, DELETE_FLIGHT } from './URL'
 
 export const getFlights = () => {    
     return new Promise((resolve, reject) => {
@@ -47,3 +47,51 @@ export const createFlight = (createFlightReqBody) => {
         }
     });
 };
+
+export const updateFlight = (flightId, updateFlightReqBody) => {    
+    return new Promise((resolve, reject) => {
+        try {
+            fetch(`${UPDATE_FLIGHT}/${flightId}`, {
+                method: 'PUT',
+                headers: new Headers({                    
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}}`,
+                }),
+                body: JSON.stringify(updateFlightReqBody)
+            })
+                .then(res => res.json())
+                .then(res => {                    
+                    resolve(res);
+                })
+                .catch(err => {                          
+                    reject("UPDATE_FLIGHT_ERROR");
+                });
+        } catch (error) {            
+            reject("SYSTEM_ERROR");
+        }
+    });
+};
+
+export const deleteFlight = (flightId) => {    
+    return new Promise((resolve, reject) => {
+        try {
+            fetch(`${DELETE_FLIGHT}/${flightId}`, {
+                method: 'DELETE',
+                headers: new Headers({                    
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}}`,
+                }),              
+            })
+                .then(res => res.json())
+                .then(res => {                    
+                    resolve(res);
+                })
+                .catch(err => {                          
+                    reject("DELETE_FLIGHT_ERROR");
+                });
+        } catch (error) {            
+            reject("SYSTEM_ERROR");
+        }
+    });
+};
+

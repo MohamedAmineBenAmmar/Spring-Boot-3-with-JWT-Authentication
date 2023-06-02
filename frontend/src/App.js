@@ -40,6 +40,7 @@ import brandDark from "assets/images/logo-ct-dark.png";
 
 import TestComponent from "layouts/catering_company/test";
 import FlightCreate from "layouts/flights/flightCreate";
+import FlightUpdate from "layouts/flights/flightUpdate";
 
 export default function App() {
 
@@ -168,6 +169,7 @@ export default function App() {
           {getRoutes(routes)}
           <Route exact path="/catering-form" element={<TestComponent/>} />
           <Route exact path="/flights/create" element={<FlightCreate/>} />
+          <Route exact path="/flights/edit" element={<FlightUpdate/>} />
          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
@@ -194,6 +196,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route exact path="/catering-form" element={<TestComponent/>} />
         <Route exact path="/flights/create" element={<FlightCreate/>} />
+        <Route exact path="/flights/edit" element={<FlightUpdate/>} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>

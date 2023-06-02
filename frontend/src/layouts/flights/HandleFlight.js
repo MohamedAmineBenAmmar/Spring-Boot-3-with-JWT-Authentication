@@ -6,7 +6,7 @@ import MuiAlert from '@mui/material/Alert';
 
 import { getAllCateringCompanies } from '../../services/cateringCompaniesServices'
 import { getAllCoPilots, getAllPilots, getAllFlightCrew } from '../../services/crew'
-import { createFlight } from '../../services/flightServices'
+import { createFlight, updateFlight } from '../../services/flightServices'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
@@ -26,7 +26,7 @@ const initialFormValues = {
 };
 
 
-function HandleFlight({ operation }) {
+function HandleFlight({ operation, flightToUpadte }) {
     const [formValues, setFormValues] = useState(initialFormValues);
     const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
     const [cateringCompanies, setCateringCompanies] = useState([]); // "cateringCompanies": [{"id": 1}, ...],
@@ -74,6 +74,12 @@ function HandleFlight({ operation }) {
             });
 
     }, [])
+
+    useEffect(() => {
+        if(operation === 'UPDATE'){
+            setFormValues({...flightToUpadte, flightCrew: flightToUpadte.flight_crew})
+        }
+    }, [operation, flightToUpadte])
 
 
     // To change
@@ -139,6 +145,16 @@ function HandleFlight({ operation }) {
                 .catch(err => {                    
                     // setNotification({ open: true, message: 'Error occured', severity: 'error' })
                 })
+        } else {
+            // Case of update
+            let updateFlightReqBody = buildRequestBody()       
+            updateFlight(formValues.id, updateFlightReqBody)
+            .then(res => {                    
+                setNotification({ open: true, message: 'Flight updated successfully', severity: 'success' })
+            })
+            .catch(err => {                    
+                // setNotification({ open: true, message: 'Error occured', severity: 'error' })
+            }) 
         }
     }
 
@@ -228,11 +244,31 @@ function HandleFlight({ operation }) {
     ))
 
     const handlePilotSelection = (e) => {
-        setFormValues({ ...formValues, pilot: { id: e.target.value } })
+        console.log("e.target.name", e.target.name)
+        console.log("e.target.value", e.target.value)
+
+        // determine the id of the pilot
+        let pilot = null
+        for (let i = 0; i < pilots.length; i++) {
+            if (pilots[i].id == e.target.value) {
+                pilot = pilots[i]
+                break
+            }
+        }
+        setFormValues({ ...formValues, pilot })
     }
 
     const handleCopiloteSelection = (e) => {
-        setFormValues({ ...formValues, coPilot: { id: e.target.value } })
+        // determine the copilot id
+        let coPilot = null
+        for (let i = 0; i < coPilots.length; i++) {
+            if (coPilots[i].id == e.target.value) {
+                coPilot = coPilots[i]
+                break
+            }
+        }
+
+        setFormValues({ ...formValues, coPilot })
     }
 
     const verifyCrewMember = (crewMember) => {
@@ -258,11 +294,11 @@ function HandleFlight({ operation }) {
     }
 
     const displayPilots = pilots.map((pilot, index) => (
-        <FormControlLabel value={pilot.id} control={<Radio />} label={`${pilot.firstname} ${pilot.lastname}`} />
+        <FormControlLabel key={index} checked={pilot.id === formValues.pilot.id} value={pilot.id} control={<Radio />} label={`${pilot.firstname} ${pilot.lastname}`} />
     ))
 
     const displayCoPilots = coPilots.map((coPilot, index) => (
-        <FormControlLabel value={coPilot.id} control={<Radio />} label={`${coPilot.firstname} ${coPilot.lastname}`} />
+        <FormControlLabel key={index} checked={coPilot  .id === formValues.coPilot.id} value={coPilot.id} control={<Radio />} label={`${coPilot.firstname} ${coPilot.lastname}`} />
     ))
 
     const displayCrewMembers = flightCrew.map((crewMember, index) => (
