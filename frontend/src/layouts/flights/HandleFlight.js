@@ -411,102 +411,109 @@ function HandleFlight({ operation, flightToUpadte }) {
             </AccordionSummary>
             <AccordionDetails>
               <Box
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+                sx={{ display: "flex", flexDirection: "row", width: "100%" }}
               >
-                <TextField
-                  id="flightNumber"
-                  name="flightNumber"
-                  label="Flight Number"
-                  value={formValues.flightNumber}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  id="airline"
-                  name="airline"
-                  label="Airline"
-                  value={formValues.airline}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  id="departureAirport"
-                  name="departureAirport"
-                  label="Departure Airport"
-                  value={formValues.departureAirport}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  id="arrivalAirport"
-                  name="arrivalAirport"
-                  label="Arrival Airport"
-                  value={formValues.arrivalAirport}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-              </Box>
-
-              <Box
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-              >
-                <TextField
-                  id="departureTime"
-                  name="departureTime"
-                  label="Departure Time"
-                  type="datetime-local"
-                  required
-                  value={formValues.departureTime}
-                  onChange={handleFormChange}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }} // Add this line
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  id="arrivalTime"
-                  name="arrivalTime"
-                  label="Arrival Time"
-                  type="datetime-local"
-                  required
-                  value={formValues.arrivalTime}
-                  onChange={handleFormChange}
-                  fullWidth
-                  InputLabelProps={{ shrink: true }} // Add this line
-                  sx={{ mb: 2 }}
-                />
-              </Box>
-              <Box
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-              >
-                {/* ... */}
-                <TextField
-                  id="seatsAvailable"
-                  name="seatsAvailable"
-                  label="Seats availbalbe"
-                  value={formValues.seatsAvailable}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  id="price"
-                  name="price"
-                  label="Price"
-                  value={formValues.price}
-                  onChange={handleFormChange}
-                  required
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "50%",
+                    mr: 2,
+                  }}
+                >
+                  <TextField
+                    id="flightNumber"
+                    name="flightNumber"
+                    label="Flight Number"
+                    value={formValues.flightNumber}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="departureAirport"
+                    name="departureAirport"
+                    label="Departure Airport"
+                    value={formValues.departureAirport}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="departureTime"
+                    name="departureTime"
+                    label="Departure Time"
+                    type="datetime-local"
+                    required
+                    value={formValues.departureTime}
+                    onChange={handleFormChange}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="seatsAvailable"
+                    name="seatsAvailable"
+                    label="Seats available"
+                    value={formValues.seatsAvailable}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "50%",
+                  }}
+                >
+                  <TextField
+                    id="airline"
+                    name="airline"
+                    label="Airline"
+                    value={formValues.airline}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="arrivalAirport"
+                    name="arrivalAirport"
+                    label="Arrival Airport"
+                    value={formValues.arrivalAirport}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="arrivalTime"
+                    name="arrivalTime"
+                    label="Arrival Time"
+                    type="datetime-local"
+                    required
+                    value={formValues.arrivalTime}
+                    onChange={handleFormChange}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    id="price"
+                    name="price"
+                    label="Price"
+                    value={formValues.price}
+                    onChange={handleFormChange}
+                    required
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
               </Box>
             </AccordionDetails>
           </Accordion>
@@ -533,6 +540,7 @@ function HandleFlight({ operation, flightToUpadte }) {
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
               >
                 {/* Displaying menus */}
+                <small>{!selectedCateringCompanies.length && ("Menu will be displayed here once you select a catering company")}</small>
                 {displayMenus}
               </Box>
             </AccordionDetails>
