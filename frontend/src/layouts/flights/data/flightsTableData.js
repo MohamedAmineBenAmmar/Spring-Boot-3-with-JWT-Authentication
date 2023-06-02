@@ -75,7 +75,7 @@ export default function FlightData() {
         coPilot: item.coPilot.firstname + " " + item.coPilot.lastname,
         action: (
           <>
-            <Icon onClick={() => { visualize(item) }} fontSize="small" style={{ marginRight: '5px', cursor: 'pointer' }}>payment</Icon>
+            <Icon onClick={() => { visualize(item) }} fontSize="small" style={{ marginRight: '5px', cursor: 'pointer' }}>visibility</Icon>
             <Icon onClick={() => { edit(item) }} fontSize="small" style={{ marginRight: '5px', cursor: 'pointer' }}>edit</Icon>
             <Icon onClick={() => { handledelete(item) }} fontSize="small" style={{ marginRight: '5px', color: "red", cursor: 'pointer' }}>delete</Icon>
           </>
