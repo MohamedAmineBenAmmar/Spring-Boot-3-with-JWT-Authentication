@@ -54,7 +54,7 @@ function Basic() {
       setToken(res.token);
       // Set the token to the local storage
       localStorage.setItem('token', res.token);
-      // redirect the user to the dashboard
+      // redirect the user to the dashboard     
       navigate('/dashboard');
     })
       .catch((err) => {
@@ -63,8 +63,7 @@ function Basic() {
   }
 
   if (token) {
-    navigate('/dashboard');
-    return null;
+    navigate('/dashboard'); 
   }
 
   return (

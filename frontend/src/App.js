@@ -29,7 +29,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import routes from "routes";
+import routes, { sidebarItems } from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -42,6 +42,8 @@ import TestComponent from "layouts/catering_company/test";
 import FlightCreate from "layouts/flights/flightCreate";
 import FlightUpdate from "layouts/flights/flightUpdate";
 import VisualizeFlight from "layouts/flights/VisualizeFlight";
+import { signin } from "services/authServices";
+import { signup } from "services/authServices";
 
 export default function App() {
 
@@ -138,18 +140,14 @@ export default function App() {
     </MDBox>
   );
 
-  
-  useEffect(() => {    
-    if(pathname.length > 1) {
+
+  useEffect(() => {
+    if (pathname.length > 1) {
       localStorage.setItem("lastLocation", pathname);
     }
   }, [pathname])
 
 
-  if(!token && pathname !== "/authentication/sign-up" && pathname !== "/authentication/sign-in") {
-    return <Navigate to="/authentication/sign-in" />
-  }
-  
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -160,7 +158,7 @@ export default function App() {
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
               brandName="Tunis Air"
-              routes={routes}
+              routes={sidebarItems}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -171,11 +169,11 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route exact path="/catering-form" element={<TestComponent/>} />
-          <Route exact path="/flights/create" element={<FlightCreate/>} />
-          <Route exact path="/flights/edit" element={<FlightUpdate/>} />
-          <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
-         <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route exact path="/catering-form" element={<TestComponent />} />
+          <Route exact path="/flights/create" element={<FlightCreate />} />
+          <Route exact path="/flights/edit" element={<FlightUpdate />} />
+          <Route exact path="/flights/visualize" element={<VisualizeFlight />} />         
+          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -188,7 +186,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="Tunis Air"
-            routes={routes}
+            routes={sidebarItems}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -199,10 +197,10 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route exact path="/catering-form" element={<TestComponent/>} />
-        <Route exact path="/flights/create" element={<FlightCreate/>} />
-        <Route exact path="/flights/edit" element={<FlightUpdate/>} />
-        <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
+        <Route exact path="/catering-form" element={<TestComponent />} />
+        <Route exact path="/flights/create" element={<FlightCreate />} />
+        <Route exact path="/flights/edit" element={<FlightUpdate />} />
+        <Route exact path="/flights/visualize" element={<VisualizeFlight />} />     
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>
