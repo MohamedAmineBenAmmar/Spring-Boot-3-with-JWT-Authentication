@@ -6,7 +6,6 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import CardActionArea from '@mui/material/CardActionArea';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from '@mui/material/Typography';
@@ -16,7 +15,8 @@ import FreeBreakfastIcon from '@mui/icons-material/FreeBreakfast';
 import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CardActions from '@mui/material/CardActions';
+import Box from '@mui/material/Box';
+
 function CateringCompanyCard({
   companyName,
   contactInformation,
@@ -40,49 +40,47 @@ function CateringCompanyCard({
 
     return (
       <ImageListItem key={index}>
-        <Card
+      <Card
+        sx={{
+          display: 'inline-block',
+          borderRadius: 'md',
+          mx: 1,
+          boxShadow: '1px 4px 6px rgba(0, 0, 0, 0.1)',
+          overflow: 'visible',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="h5" gutterBottom>
+            {menu.name}
+          </Typography>
+          <Box display="flex" alignItems="center" mb={2}>
+            {menuTypeIcon}
+            <Typography variant="body2" color="textSecondary" ml={1}>
+              {menu.menuType}
+            </Typography>
+          </Box>
+          <Typography variant="body2" color="textSecondary" mb={2}>
+            {menuItems}
+          </Typography>
+        </CardContent>
+        <Box
           sx={{
-            display: 'inline-block',
-            borderRadius: 'md',
-            mx: 1,
-            boxShadow: '1px 4px 6px rgba(0, 0, 0, 0.1)',
-            overflow: 'visible',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
+            p: 2,
+            color: 'white',
+            textAlign: 'center',
+            borderTopLeftRadius: '4px',
+            borderTopRightRadius: '4px',
           }}
         >
-          <CardActionArea sx={{ flexGrow: 1 }}>
-            <CardContent sx={{ p: 3 }}>
-              <MDTypography variant="h5" gutterBottom>
-                {menu.name}
-              </MDTypography>
-              <MDBox display="flex" alignItems="center" mb={2}>
-                {menuTypeIcon}
-                <MDTypography variant="body2" color="textSecondary" ml={1}>
-                  {menu.menuType}
-                </MDTypography>
-              </MDBox>
-              <MDTypography variant="body2" color="textSecondary" mb={2}>
-                {menuItems}
-              </MDTypography>
-            </CardContent>
-          </CardActionArea>
-          <MDBox
-            sx={{
-              p: 2,
-              color: 'white',
-              textAlign: 'center',
-              borderTopLeftRadius: '4px',
-              borderTopRightRadius: '4px',
-            }}
-          >
-            <MDTypography variant="subtitle2" component="div" color='primary'>
-              ${menu.pricePerServing}
-            </MDTypography>
-          </MDBox>
-        </Card>
-      </ImageListItem>
+          <Typography variant="subtitle2" component="div" color="primary">
+            ${menu.pricePerServing}
+          </Typography>
+        </Box>
+      </Card>
+    </ImageListItem>
     );
   });
 
