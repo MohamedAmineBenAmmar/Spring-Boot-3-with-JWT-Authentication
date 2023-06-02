@@ -102,10 +102,9 @@ function CateringCompanyCard({
           {companyName}
         </MDTypography>
         <MDBox ml="auto" display="flex" alignItems="center">
-          <LocalShippingIcon color="primary" sx={{ mr: 0.5 }} />
-          <MDTypography variant="body2" color="textSecondary">
-            {delivery ? 'Available' : 'Not Available'}
-          </MDTypography>
+        <IconButton onClick={onDelete} color="error">
+          <DeleteIcon />
+        </IconButton>
         </MDBox>
       </MDBox>
       <MDBox mb={3} lineHeight={0} ml={2}>
@@ -128,6 +127,12 @@ function CateringCompanyCard({
             {capacity}
           </Typography>
         </MDBox>
+        <MDBox ml={2} display="flex" alignItems="center">
+          <LocalShippingIcon color="primary" sx={{ mr: 0.5 }} />
+          <MDTypography variant="body2" color="textSecondary">
+            {delivery ? 'Available' : 'Not Available'}
+          </MDTypography>
+        </MDBox>
       </MDBox>
       <MDBox display="flex" overflow="auto">
         <ImageList
@@ -142,11 +147,6 @@ function CateringCompanyCard({
           {renderMenus}
         </ImageList>
       </MDBox>
-      <CardActions>
-        <IconButton onClick={onDelete} color="error">
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
     </Card>
   );
 }
