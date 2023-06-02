@@ -68,10 +68,6 @@ function Cover() {
 
   };
 
-  const handleRedirection = () => {
-    window.location.href = "/authentication/sign-in";
-  }
-
   if (token) {
     navigate('/dashboard');
     return null;

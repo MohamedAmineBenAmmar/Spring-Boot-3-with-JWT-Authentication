@@ -36,14 +36,14 @@ function handleDelete(id, event) {
   })
     .then((result) => {
       console.log("Success:", result);
-      window.location.reload();
+      // window.location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
 
-function data(props) {
+function Data(props) {
   const [openSnack, setOpenSnack] = useState(false);
 
   const handleSnackClick = () => {
@@ -168,7 +168,16 @@ function data(props) {
               <IconButton
                 variant="contained"
                 color="error"
-                onClick={(e) => handleDelete(item.id, e)}
+                onClick={(e) => {
+                  handleDelete(item.id, e).then(() => {
+                    // If delete is done successfully then refresh the UI and delete the row in the UI
+                    let filteredData = data.filter((el) => el.id !== item.id);
+                    setData(filteredData)
+                  })
+                    .catch((error) => {
+                      console.error("Error:", error);
+                    });
+                }}
               >
                 <Icon fontSize="medium">close</Icon>
               </IconButton>
@@ -193,4 +202,4 @@ function data(props) {
   };
 }
 
-export default data;
+export default Data;

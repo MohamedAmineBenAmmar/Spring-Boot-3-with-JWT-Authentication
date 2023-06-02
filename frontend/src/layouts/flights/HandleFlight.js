@@ -20,8 +20,8 @@ const initialFormValues = {
     seatsAvailable: 0,
     price: 0,
     menus: [], // "menus": [{"id" : 1}, ...],
-    pilot: null, // "pilot": {"id": 1},
-    coPilot: null, // "coPilot": {"id": 1},
+    pilot: {}, // "pilot": {"id": 1},
+    coPilot: {}, // "coPilot": {"id": 1},
     flightCrew: [], // "flightCrew": [{"id": 1}, ...],
 };
 

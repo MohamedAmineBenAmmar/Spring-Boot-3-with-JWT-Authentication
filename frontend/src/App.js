@@ -146,9 +146,9 @@ export default function App() {
   }, [pathname])
 
 
-  if(!token && pathname !== "/authentication/sign-up" && pathname !== "/authentication/sign-in") {
-    return <Navigate to="/authentication/sign-in" />
-  }
+  // if(!token && pathname !== "/authentication/sign-up" && pathname !== "/authentication/sign-in") {
+  //   return <Navigate to="/authentication/sign-in" />
+  // }
   
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
