@@ -6,6 +6,7 @@ import { getFlights } from '../../../services/flightServices'
 import { Icon } from "@mui/material";
 import { setFlight, useMaterialUIController } from 'context';
 import { useNavigate } from 'react-router-dom'
+import { deleteFlight } from '../../../services/flightServices'
 
 export default function FlightData() {
   const [data, setData] = useState([]);
@@ -23,8 +24,17 @@ export default function FlightData() {
       });
   }, []);
 
-  const handledelete = (flight) => {
-    console.log("delete flight: ", flight);
+  const handledelete = (flight) => {   
+    deleteFlight(flight.id).then((res) => {      
+      getFlights().then((res) => {
+        // filter the data array from the deleted element
+        let filteredData = data.filter((element) => (element.id != flight.id))
+        setData(filteredData);
+      })
+        .catch((err) => {
+          console.log("error: ", err);
+        });
+    })
   }
 
   const visualize = (flight) => {
