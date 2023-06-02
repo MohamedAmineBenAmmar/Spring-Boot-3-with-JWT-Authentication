@@ -11,15 +11,25 @@ import {
 import Icon from "@mui/material/Icon";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import {useEffect } from "react";
 
-export default function CreateModal() {
+export default function CreateModal(props) {
+  
   const [formState, setFormState] = useState({
     email: "",
     firstname: "",
     lastname: "",
-    role: "",
+    role: props.role,
   });
-
+  useEffect(() => {
+    setFormState((prevState) => ({
+      email: "",
+    firstname: "",
+    lastname: "",
+    role: props.role,
+    }));
+  }, [props.role]);
+  
   const handleFormChange = (event) => {
     const value = event.target.value;
     const name = event.target.name;
@@ -153,8 +163,9 @@ export default function CreateModal() {
                   variant="outlined"
                   required
                   fullWidth
+                  disabled="true"
                   margin="normal"
-                  value={formState.role}
+                  value={props.role}
                   onChange={handleFormChange}
                 />
                 <Button
