@@ -95,22 +95,7 @@ const routes = [
     route: "/flights",
     component: <ManageFlights />, // TODO
   },
-  {
-    type: "collapse",
-    name: "Vols",
-    key: "flight_details",
-    icon: <Icon fontSize="small">flightTakeoff</Icon>,
-    route: "/flight_details",
-    component: <FlightData flightId="1" />, // TODO
-  },
-  {
-    type: "collapse",
-    name: "Vols",
-    key: "flight_details",
-    icon: <Icon fontSize="small">flightTakeoff</Icon>,
-    route: "/flight_create",
-    component: <CreateFlightForm flightId="30" />, // TODO
-  },
+ 
   // {
   //   type: "collapse",
   //   name: "Tables",
@@ -143,30 +128,14 @@ const routes = [
   //   route: "/notifications",
   //   component: <Notifications />,
   // },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
 ];
 
 export default routes;
