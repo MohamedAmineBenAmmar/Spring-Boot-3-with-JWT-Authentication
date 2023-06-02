@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button, Modal, Fade, TextField, Box, Typography, IconButton, Snackbar,
 } from '@mui/material';
 import Icon from "@mui/material/Icon";
-import Snackbar2 from './snackbar';
 
 export default function EditModal(props) {
 
@@ -13,6 +12,14 @@ export default function EditModal(props) {
         lastname: props.item.lastname,
         role: props.item.role,
     })
+    useEffect(() => {
+        setFormState((prevState) => ({
+            email: props.item.email,
+            firstname: props.item.firstname,
+            lastname: props.item.lastname,
+            role: props.item.role,
+        }));
+      }, [props]);
 
     const handleFormChange = (event) => {
         const value = event.target.value;
@@ -129,12 +136,14 @@ export default function EditModal(props) {
                                 <TextField
                                     name='role'
                                     label="Role"
+                                    disabled="true"
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
                                     placeholder={props.item.role}
                                     value={formState.role}
                                     onChange={handleFormChange}
+                                    
                                 />
                                 <Button variant="contained" color="primary" type="submit" onClick={handleClose} style={{ color: 'white' }}>
                                     Submit

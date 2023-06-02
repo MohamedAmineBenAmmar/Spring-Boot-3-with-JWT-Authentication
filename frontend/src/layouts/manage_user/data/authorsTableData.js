@@ -71,6 +71,7 @@ function data(props) {
       const response = await fetch(api, {
         method: "get",
         headers: new Headers({
+          'Content-Type': 'application/json',
           Authorization: `Bearer ` + localStorage.getItem("token"),
         }),
       });
@@ -185,7 +186,7 @@ function data(props) {
             color="text"
             fontWeight="medium"
           >
-            <CreateModal modalOpen={props.modalOpen}></CreateModal>
+            <CreateModal role={props.role}></CreateModal>
           </MDTypography>
         ),
       },
