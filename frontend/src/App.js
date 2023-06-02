@@ -157,7 +157,7 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Tunis Air"
+              brandName="Tunisair"
               routes={sidebarItems}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
@@ -185,7 +185,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Tunis Air"
+            brandName="Tunisair"
             routes={sidebarItems}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
