@@ -67,13 +67,14 @@ const handleRedirection = ()=>{
         {notification.message}
       </MuiAlert>
     </Snackbar>
-      <Box display="flex" justifyContent="flex-end" p={2}>
-      <Button onClick={handleRedirection} variant="contained" color="primary" >
+      <Box display="flex" justifyContent="flex-end"  >
+      <Button onClick={handleRedirection} variant="contained" color="primary"sx={{ mb: 5, mt: 2 }} >
       <Typography variant="body2" color="#ffebee">
             add catering company
           </Typography>
     </Button>
       </Box>
+     
       <Grid container spacing={2}>
       {cateringCompanies.length > 0 ? (
         <Grid container spacing={2}>
