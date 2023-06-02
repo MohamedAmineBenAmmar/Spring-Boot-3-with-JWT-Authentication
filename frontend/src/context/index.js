@@ -95,9 +95,9 @@ function MaterialUIControllerProvider({ children }) {
         } else {
           // Token is valid
           let lastLocation = localStorage.getItem("lastLocation");
-          if (lastLocation) {
+          if (lastLocation) {            
             navigate(lastLocation);
-          } else {
+          } else {           
             navigate('/dashboard');
           }         
         }
