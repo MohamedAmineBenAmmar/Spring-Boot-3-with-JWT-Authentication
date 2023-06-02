@@ -19,6 +19,7 @@ import MDTypography from "components/MDTypography";
 import MDBox from "components/MDBox";
 import moment from "moment";
 import { getFlightById } from "services/flightServices";
+import { predictFlightDelay } from '../../services/flightServices'
 
 // New component to render two attributes in one row
 const FlightAttributeRow = ({ icon1, label1, value1, icon2, label2, value2 }) => (
@@ -40,19 +41,43 @@ const FlightAttributeRow = ({ icon1, label1, value1, icon2, label2, value2 }) =>
 
 export default function FlightDetail({ flightId }) {
   const [flight, setFlight] = useState(null);
+  const [predictedDelay, setPredictedDelay] = useState(null);
+
+  const formatPrediction = (value) => {
+    let msg = null;
+    if(value > 0){
+      // Convert the value to integer
+      value = Math.round(value);
+      msg = `This flight is predicted to be delayed by ${value} minutes`;
+    } else {
+      // Convert the value to integer
+      value = Math.round(value) * -1;
+      msg = `This flight is predicted to be early by ${value} minutes`;  
+    }
+
+    return msg
+  }
 
   useEffect(() => {
 
-    if(flightId != null){      
+    if (flightId != null) {
       getFlightById(flightId).then((res) => {
         setFlight(res);
+
+        // Grab the predicted value 
+        predictFlightDelay(res.id).then((res) => {
+          setPredictedDelay(res.delay);
+        }
+        ).catch((err) => {
+          console.log("error: ", err);
+        });
       })
         .catch((err) => {
           console.log("error: ", err);
         });
     }
 
-  
+
 
   }, [flightId]);
 
@@ -175,6 +200,17 @@ export default function FlightDetail({ flightId }) {
         >
           {renderMenus}
         </ImageList>
+        <MDTypography variant="h6" mt={4} mb={2}>
+          Artifficial Intelligence Integration
+        </MDTypography>
+        <FlightAttributeRow
+          icon1={<LocalAirportIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label1="Flight Number"
+          value1={flight.flightNumber}
+          icon2={<AccessTimeIcon color="primary" sx={{ fontSize: 18, mr: 0.5 }} />}
+          label2="Predicted delay"
+          value2={(predictedDelay !== null) ? formatPrediction(predictedDelay) : "Loading..."}
+        />
       </Card>
     </DashboardLayout>
   );
