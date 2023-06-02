@@ -15,7 +15,7 @@ import MDButton from "components/MDButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import bgImage from "assets/images/bg-sign-up-cover.jpg";
 
 import { useState } from 'react'
 import { useMaterialUIController } from 'context';

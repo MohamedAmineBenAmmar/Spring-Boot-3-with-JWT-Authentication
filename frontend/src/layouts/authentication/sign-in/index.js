@@ -24,7 +24,8 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+// import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/bg-sign-up-cover.jpg";
 
 // Importing the sigin in
 import { signin } from "../../../services/authServices";
@@ -83,22 +84,12 @@ function Basic() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>            
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography component={MuiLink} href="https://github.com/MohamedAmineBenAmmar/Spring-Boot-3-with-JWT-Authentication" variant="body1" color="white">
                 <GitHubIcon color="inherit" />
               </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid>
+            </Grid>            
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
@@ -108,19 +99,7 @@ function Basic() {
             </MDBox>
             <MDBox mb={2}>
               <MDInput type="password" label="Password" fullWidth id="password" onChange={handleChange} />
-            </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
-            </MDBox>
+            </MDBox>                        
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
                 sign in
@@ -138,8 +117,7 @@ function Basic() {
                   textGradient
                 >
                   Sign up
-                </MDTypography>
-                <p>zebi: token: {token}</p>
+                </MDTypography>                
               </MDTypography>
             </MDBox>
           </MDBox>

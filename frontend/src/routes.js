@@ -197,7 +197,7 @@ const sidebarItems = [
   },
   {
     type: "collapse",
-    name: "Restauration",
+    name: "Catering Companies",
     key: "manage_catering",
     icon: <Icon fontSize="small">restaurant</Icon>,
     route: "/catering",
@@ -205,7 +205,7 @@ const sidebarItems = [
   },
   {
     type: "collapse",
-    name: "Vols",
+    name: "Flights",
     key: "manage_flights",
     icon: <Icon fontSize="small">flightTakeoff</Icon>,
     route: "/flights",
