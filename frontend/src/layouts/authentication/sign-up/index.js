@@ -69,7 +69,6 @@ function Cover() {
   };
 
 
-
   if (token) {
     navigate('/dashboard');
     return null;

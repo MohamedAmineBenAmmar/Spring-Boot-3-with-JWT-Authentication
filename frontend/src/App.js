@@ -147,7 +147,6 @@ export default function App() {
     }
   }, [pathname])
 
-
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
