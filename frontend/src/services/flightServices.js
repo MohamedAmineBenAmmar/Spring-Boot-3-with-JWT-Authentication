@@ -1,4 +1,4 @@
-import { GET_FLIGHTS, CREATE_FLIGHT, UPDATE_FLIGHT, DELETE_FLIGHT } from './URL'
+import { GET_FLIGHTS, CREATE_FLIGHT, UPDATE_FLIGHT, DELETE_FLIGHT, GET_FLIGHT_BY_ID } from './URL'
 
 export const getFlights = () => {    
     return new Promise((resolve, reject) => {
@@ -7,12 +7,12 @@ export const getFlights = () => {
                 method: 'GET',
                 headers: new Headers({                    
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}}`,
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 }),
                 
             })
                 .then(res => res.json())
-                .then(res => {                    
+                .then(res => {                                
                     resolve(res);
                 })
                 .catch(err => {                    
@@ -95,3 +95,27 @@ export const deleteFlight = (flightId) => {
     });
 };
 
+export const getFlightById = (flightId) => {    
+    return new Promise((resolve, reject) => {
+        try {
+            fetch(`${GET_FLIGHT_BY_ID}/${flightId}`, {
+                method: 'GET',
+                headers: new Headers({                    
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                }),
+                
+            })
+                .then(res => res.json())
+                .then(res => {                            
+                    resolve(res);
+                })
+                .catch(err => {                    
+                    reject("GET_FLIGHT_BY_ID_ERROR");
+                });
+        } catch (error) {            
+            reject("SYSTEM_ERROR");
+        }
+    });
+};

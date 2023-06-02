@@ -18,6 +18,7 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import MDTypography from "components/MDTypography";
 import MDBox from "components/MDBox";
 import moment from "moment";
+import { getFlightById } from "services/flightServices";
 
 // New component to render two attributes in one row
 const FlightAttributeRow = ({ icon1, label1, value1, icon2, label2, value2 }) => (
@@ -41,17 +42,14 @@ export default function FlightDetail({ flightId }) {
   const [flight, setFlight] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/flight/${flightId}`, {
-      method: "get",
-      headers: new Headers({
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6ImhhbW1hQGdtYWlsLmNvbSIsImlhdCI6MTY4NTU2NzAzMCwiZXhwIjoxNjg3MDA3MDMwfQ.ApDxX80FLh8asL-PloMUhvSYG2nFXut98n4I715XSOQ",
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFlight(data);
-      });
+    if(flightId != null){      
+      getFlightById(flightId).then((res) => {
+        setFlight(res);
+      })
+        .catch((err) => {
+          console.log("error: ", err);
+        });
+    }
   }, [flightId]);
 
   if (!flight) {

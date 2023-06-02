@@ -41,6 +41,7 @@ import brandDark from "assets/images/logo-ct-dark.png";
 import TestComponent from "layouts/catering_company/test";
 import FlightCreate from "layouts/flights/flightCreate";
 import FlightUpdate from "layouts/flights/flightUpdate";
+import VisualizeFlight from "layouts/flights/VisualizeFlight";
 
 export default function App() {
 
@@ -170,6 +171,7 @@ export default function App() {
           <Route exact path="/catering-form" element={<TestComponent/>} />
           <Route exact path="/flights/create" element={<FlightCreate/>} />
           <Route exact path="/flights/edit" element={<FlightUpdate/>} />
+          <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
@@ -197,6 +199,7 @@ export default function App() {
         <Route exact path="/catering-form" element={<TestComponent/>} />
         <Route exact path="/flights/create" element={<FlightCreate/>} />
         <Route exact path="/flights/edit" element={<FlightUpdate/>} />
+        <Route exact path="/flights/visualize" element={<VisualizeFlight/>} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>

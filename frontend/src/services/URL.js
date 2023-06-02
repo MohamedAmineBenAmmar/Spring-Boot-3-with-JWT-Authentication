@@ -5,6 +5,7 @@ export const GET_FLIGHTS = `${BACKEND_HOST}/flight/all`
 export const CREATE_FLIGHT = `${BACKEND_HOST}/flight`
 export const UPDATE_FLIGHT = `${BACKEND_HOST}/flight`
 export const DELETE_FLIGHT = `${BACKEND_HOST}/flight`
+export const GET_FLIGHT_BY_ID = `${BACKEND_HOST}/flight`
 
 
 export const GET_CATERING_COMPANIES = `${BACKEND_HOST}/catering/all`

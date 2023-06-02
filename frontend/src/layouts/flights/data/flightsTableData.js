@@ -38,7 +38,8 @@ export default function FlightData() {
   }
 
   const visualize = (flight) => {
-    console.log("visualize flight: ", flight);
+    setFlight(dispatch, flight);
+    navigate('/flights/visualize');
   }
 
   const edit = (flight) => {    
